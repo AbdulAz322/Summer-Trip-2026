@@ -1,0 +1,4621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Trip 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0f7ff;
+  --ink: #0a1628;
+  --c1: #0e6ba8;
+  --c2: #1e90d4;
+  --c3: #7ec8e3;
+  --text: #0a1628;
+  --muted: rgba(10,22,40,0.45);
+  --card: rgba(14,107,168,0.05);
+  --border: rgba(14,107,168,0.14);
+  --orb1: #7ec8e3;
+  --orb2: #b8dff0;
+  --orb3: #d4eef9;
+  --header-bg: rgba(240,247,255,0.9);
+  --transition: 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* ── MYKONOS — Aegean Blue & Whitewash ── */
+body.theme-mykonos {
+  --bg: #eef6ff;
+  --ink: #0a1e3d;
+  --c1: #0d5fa3;
+  --c2: #1a8fd1;
+  --c3: #6ec6e8;
+  --muted: rgba(10,30,61,0.45);
+  --card: rgba(13,95,163,0.05);
+  --border: rgba(13,95,163,0.13);
+  --orb1: #6ec6e8;
+  --orb2: #aaddf4;
+  --orb3: #ceedfb;
+  --header-bg: rgba(238,246,255,0.92);
+}
+
+/* ── MALLORCA — Mediterranean Gold & Terra ── */
+body.theme-mallorca {
+  --bg: #fff8ee;
+  --ink: #2d1a00;
+  --c1: #c26a00;
+  --c2: #e8890a;
+  --c3: #f5b84a;
+  --muted: rgba(45,26,0,0.45);
+  --card: rgba(194,106,0,0.05);
+  --border: rgba(194,106,0,0.14);
+  --orb1: #f5b84a;
+  --orb2: #fad48a;
+  --orb3: #fde9b8;
+  --header-bg: rgba(255,248,238,0.92);
+}
+
+/* ── PARIS — Bleu de France & Rose Gold ── */
+body.theme-paris {
+  --bg: #f2f0f8;
+  --ink: #120d2a;
+  --c1: #3d2fa0;
+  --c2: #6254c8;
+  --c3: #c49fbf;
+  --muted: rgba(18,13,42,0.45);
+  --card: rgba(61,47,160,0.05);
+  --border: rgba(61,47,160,0.13);
+  --orb1: #b8a8e8;
+  --orb2: #d4c8f5;
+  --orb3: #e8d8ee;
+  --header-bg: rgba(242,240,248,0.92);
+}
+
+/* ── OVERVIEW — Warm neutral ── */
+body.theme-overview, body.theme-stats, body.theme-assistant {
+  --bg: #f8f6f2;
+  --ink: #1a1612;
+  --c1: #5c4a2a;
+  --c2: #8c6e3c;
+  --c3: #c9a96e;
+  --muted: rgba(26,22,18,0.45);
+  --card: rgba(92,74,42,0.05);
+  --border: rgba(92,74,42,0.13);
+  --orb1: #d4b87a;
+  --orb2: #e8d4a8;
+  --orb3: #f2e8d0;
+  --header-bg: rgba(248,246,242,0.92);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'EB Garamond', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--c1);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: background 0.4s, transform 0.15s;
+}
+.cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--c2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: border-color 0.4s, width 0.4s, height 0.4s;
+  opacity: 0.5;
+}
+
+/* ── CITY BACKGROUND IMAGES ── */
+.city-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  background-size: cover;
+  background-position: center;
+}
+.city-bg.active { opacity: 0.18; }
+.city-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    var(--bg) 0%,
+    rgba(0,0,0,0) 30%,
+    rgba(0,0,0,0) 70%,
+    var(--bg) 100%);
+}
+
+#bg-mykonos  { background-image: url('https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=2400&q=80'); }
+#bg-mallorca { background-image: url('https://images.unsplash.com/photo-1583309217394-d216bbcd8462?w=2400&q=80'); }
+#bg-paris    { background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=2400&q=80'); }
+#bg-overview { background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=2400&q=80'); }
+
+/* ── CITY BACKGROUND IMAGES ── */
+.city-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  background-size: cover;
+  background-position: center;
+}
+.city-bg.active { opacity: 0.22; }
+.city-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    var(--bg) 0%,
+    rgba(255,255,255,0) 25%,
+    rgba(255,255,255,0) 75%,
+    var(--bg) 100%);
+}
+
+/* Mykonos — Aerial whitewashed town meets Aegean blue */
+#bg-mykonos { background-image: url('https://images.unsplash.com/photo-1718891085463-28546b1789ab?fm=jpg&q=80&w=2400&auto=format&fit=crop'); }
+/* Mallorca — Boat in turquoise lagoon, summer holiday energy */
+#bg-mallorca { background-image: url('https://images.unsplash.com/photo-1617532408070-369f42b448b0?fm=jpg&q=80&w=2400&auto=format&fit=crop'); }
+/* Paris — Eiffel Tower at golden hour */
+#bg-paris { background-image: url('https://images.unsplash.com/photo-1679231926690-cb1e8abfcefd?fm=jpg&q=80&w=2400&auto=format&fit=crop'); }
+/* Overview — Wanderlust travel collage */
+#bg-overview { background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=2400&q=80&auto=format&fit=crop'); }
+/* Stats — Friends at the beach, sunset, fun young energy */
+#bg-stats { background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=2400&q=80&auto=format&fit=crop'); }
+
+/* ── ANIMATED BACKGROUND ── */
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.3;
+  transition: background var(--transition), transform 2s ease;
+}
+.orb1 { width: 700px; height: 700px; top: -150px; right: -150px; background: var(--orb1); animation: orb-float1 14s ease-in-out infinite; }
+.orb2 { width: 600px; height: 600px; bottom: -100px; left: -100px; background: var(--orb2); animation: orb-float2 17s ease-in-out infinite; }
+.orb3 { width: 400px; height: 400px; top: 40%; left: 35%; background: var(--orb3); animation: orb-float3 11s ease-in-out infinite; }
+
+@keyframes orb-float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,40px) scale(1.1)} }
+@keyframes orb-float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(40px,-30px) scale(0.9)} }
+@keyframes orb-float3 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,30px) scale(1.05)} 66%{transform:translate(-20px,-10px) scale(0.95)} }
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── LAYOUT ── */
+.app { position: relative; z-index: 2; min-height: 100vh; }
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--header-bg);
+}
+.logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: color var(--transition);
+}
+.logo span { color: var(--muted); }
+.header-trip {
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--muted);
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.live-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  background: #2d9e5f;
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+/* ── CITY NAV ── */
+.city-nav {
+  display: flex;
+  gap: 0;
+  padding: 0 48px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.city-nav::-webkit-scrollbar { display: none; }
+.city-btn {
+  position: relative;
+  padding: 20px 28px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: none;
+  white-space: nowrap;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.city-btn:hover { color: var(--ink); }
+.city-btn.active { color: var(--ink); }
+.city-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c1), var(--c2));
+}
+.city-flag { font-size: 16px; }
+.city-days {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  background: var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+}
+.city-btn.active .city-days {
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  color: var(--bg);
+}
+
+/* ── MAIN CONTENT ── */
+.content { padding: 0 48px 60px; }
+
+/* ── HERO CITY SECTION ── */
+.city-hero {
+  padding: 52px 0 40px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.city-hero-left {}
+.city-eyebrow {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--c1);
+  margin-bottom: 12px;
+  transition: color var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.city-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--c1); transition: background var(--transition); }
+.city-name-big {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 0.9;
+  background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background var(--transition);
+  margin-bottom: 12px;
+}
+.city-tagline {
+  font-size: 15px;
+  color: var(--muted);
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+}
+.city-hero-right { text-align: right; }
+.city-dates {
+  font-family: 'Syne Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.city-total-cost {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+}
+.city-total-cost span { font-size: 22px; color: var(--muted); }
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-bottom: 32px;
+  background: var(--border);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.stat-box {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.stat-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c1), var(--c2));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.stat-box:hover::before { opacity: 1; }
+.stat-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background var(--transition);
+}
+.stat-sub {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ── DETAILS GRID ── */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.detail-card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.detail-card:hover {
+  border-color: var(--c2);
+  background: rgba(255,255,255,0.92);
+  transform: translateY(-2px);
+}
+.dc-title {
+  font-family: 'Syne Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c1);
+  margin-bottom: 20px;
+  transition: color var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dc-icon { font-size: 16px; }
+
+/* ── HOTEL CARD ── */
+.hotel-info { display: flex; flex-direction: column; gap: 10px; }
+.hotel-name-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.hotel-stars { color: #fbbf24; font-size: 13px; letter-spacing: 2px; }
+.hotel-details { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.hotel-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.hotel-detail-row:last-child { border-bottom: none; }
+.hdr-label { color: var(--muted); }
+.hdr-val { font-family: 'Syne Mono', monospace; color: var(--ink); }
+
+/* ── BUDGET BREAKDOWN ── */
+.budget-list { display: flex; flex-direction: column; gap: 14px; }
+.budget-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bi-icon { font-size: 14px; width: 24px; text-align: center; }
+.bi-label { flex: 1; font-size: 12px; color: var(--muted); }
+.bi-bar-wrap { width: 100px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.bi-bar { height: 100%; background: linear-gradient(90deg, var(--c1), var(--c2)); border-radius: 2px; transition: background var(--transition); }
+.bi-amount { font-family: 'Syne Mono', monospace; font-size: 12px; color: var(--ink); min-width: 50px; text-align: right; }
+
+/* ── HIGHLIGHTS ── */
+.highlights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.highlight-tag {
+  padding: 10px 14px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, border-color 0.2s;
+  cursor: none;
+}
+.highlight-tag:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--c1);
+}
+.ht-emoji { font-size: 14px; }
+.ht-type {
+  font-family: 'Syne Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--c1);
+  text-transform: uppercase;
+  transition: color var(--transition);
+}
+
+/* ── TIPS ── */
+.tips-list { display: flex; flex-direction: column; gap: 12px; }
+.tip-item {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.tip-item:last-child { border-bottom: none; }
+.tip-num {
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+  color: var(--c1);
+  min-width: 20px;
+  margin-top: 2px;
+  transition: color var(--transition);
+}
+.tip-text { color: var(--muted); }
+.tip-text strong { color: var(--ink); font-weight: 600; }
+
+/* ── PAYMENT SECTION ── */
+.payment-section { margin-top: 8px; }
+.payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.payment-title {
+  font-family: 'Syne Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c1);
+  transition: color var(--transition);
+}
+.payment-summary {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.payments-list { display: flex; flex-direction: column; gap: 2px; }
+.payment-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  transition: background 0.2s, border-color 0.2s;
+}
+.payment-row:hover { background: rgba(255,255,255,0.95); border-color: var(--c2); }
+.pr-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+.pr-sub { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.pr-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+.pr-amount { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; color: var(--ink); }
+.pr-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+.pr-status.paid     { background: rgba(34,134,80,0.15);  color: #1f6e44; border: 1px solid rgba(34,134,80,0.3); }
+.pr-status.pending  { background: rgba(180,107,9,0.15);  color: #92560a; border: 1px solid rgba(180,107,9,0.3); }
+.pr-status.upcoming { background: rgba(0,0,0,0.06);      color: rgba(0,0,0,0.55); border: 1px solid rgba(0,0,0,0.12); }
+
+/* ── PROGRESS BAR ── */
+.progress-section {
+  margin-top: 24px;
+  padding: 24px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+.ph-label { color: var(--muted); font-family: 'Syne Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
+.ph-pct { color: var(--c1); font-family: 'Syne Mono', monospace; font-size: 11px; transition: color var(--transition); }
+.progress-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c1), var(--c2), var(--c3));
+  background-size: 200% 100%;
+  animation: shimmer 3s ease infinite;
+  transition: background var(--transition);
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-family: 'Syne Mono', monospace;
+  font-size: 10px;
+}
+.pl-paid { color: var(--c1); transition: color var(--transition); }
+.pl-remaining { color: var(--muted); }
+
+/* ── OVERVIEW TAB ── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  margin-bottom: 32px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.overview-city-card {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 24px 20px;
+  cursor: none;
+  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.overview-city-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.overview-city-card:hover::before { opacity: 0.06; }
+.occ-flag { font-size: 24px; margin-bottom: 10px; position: relative; }
+.occ-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  position: relative;
+}
+.occ-nights {
+  font-family: 'Syne Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  position: relative;
+}
+.occ-cost {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--c1);
+  transition: color var(--transition);
+  position: relative;
+}
+.occ-dates {
+  font-family: 'Syne Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 6px;
+  position: relative;
+}
+.overview-totals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--border);
+  margin-bottom: 32px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.ot-box {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 32px;
+  text-align: center;
+}
+.ot-label {
+  font-family: 'Syne Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.ot-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background var(--transition);
+  line-height: 1;
+}
+.ot-sub { font-size: 11px; color: var(--muted); margin-top: 8px; font-family: 'Syne Mono', monospace; }
+
+/* ── CATEGORY BUDGETS ── */
+.cat-budgets {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background: var(--border);
+}
+.cat-box {
+  background: var(--bg);
+  padding: 28px;
+}
+.cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.cat-icon { font-size: 20px; }
+.cat-name { font-family: 'Syne Mono', monospace; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+.cat-amount { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.cat-bar-track { height: 3px; background: var(--border); }
+.cat-bar-fill { height: 100%; background: linear-gradient(90deg, var(--c1), var(--c2)); transition: background var(--transition); }
+.cat-pct { font-family: 'Syne Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 6px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.city-panel { animation: fadeSlideUp 0.5s ease both; }
+.overview-panel { animation: fadeSlideUp 0.5s ease both; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .header { padding: 20px 24px; }
+  .header-trip { display: none; }
+  .city-nav { padding: 0 24px; }
+  .content { padding: 0 24px 40px; }
+  .city-hero { grid-template-columns: 1fr; gap: 20px; }
+  .city-hero-right { text-align: left; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .details-grid { grid-template-columns: 1fr; }
+  .highlights-grid { grid-template-columns: 1fr; }
+  .overview-grid { grid-template-columns: repeat(2, 1fr); }
+  .overview-totals { grid-template-columns: 1fr; }
+  .cat-budgets { grid-template-columns: 1fr; }
+  .payment-row { grid-template-columns: 1fr auto; }
+  .pr-date { display: none; }
+}
+/* ════════════════════════════════════════════════
+   NEW FEATURES — Cinematic, Countdown, Map, Timeline, Dark Mode, Quick Links
+   ════════════════════════════════════════════════ */
+
+/* ── MICRO-ANIMATIONS + GLASSMORPHISM (T4) ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim-in { opacity: 0; animation: fadeUp 0.6s cubic-bezier(.2,.7,.2,1) forwards; }
+.stat-tile, .overview-city-card, .boarding-pass, .detail-card,
+.clock-card, .weather-card, .stat-box {
+  transition: transform 0.35s cubic-bezier(.2,.7,.2,1), box-shadow 0.35s, border-color 0.35s;
+}
+.stat-tile, .overview-city-card, .detail-card {
+  position: relative;
+  overflow: hidden;
+}
+.stat-tile::before, .overview-city-card::before, .detail-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -65%;
+  width: 55%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.13), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.stat-tile:hover::before, .overview-city-card:hover::before, .detail-card:hover::before {
+  left: 145%;
+}
+.overview-city-card:hover, .detail-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.14);
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-in { opacity: 1; animation: none; }
+  .stat-tile::before, .overview-city-card::before, .detail-card::before { display: none; }
+}
+/* On mobile, keep entry fade but disable heavy hover shimmer for performance */
+@media (max-width: 768px) {
+  .stat-tile::before, .overview-city-card::before, .detail-card::before { display: none; }
+  .boarding-pass:hover, .overview-city-card:hover, .detail-card:hover { transform: none; box-shadow: none; }
+}
+
+
+/* ── CINEMATIC INTRO ── */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: none;
+  transition: opacity 1.2s ease, visibility 1.2s ease;
+}
+#intro.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* Slideshow background */
+.intro-slides {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.intro-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: slideshow 24s infinite;
+}
+.intro-slide:nth-child(1) { animation-delay: 0s;
+  background-image: url('https://images.unsplash.com/photo-1530870110042-98b2cb110834?w=2400&q=80&auto=format&fit=crop'); }
+.intro-slide:nth-child(2) { animation-delay: 4s;
+  background-image: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=2400&q=80&auto=format&fit=crop'); }
+.intro-slide:nth-child(3) { animation-delay: 8s;
+  background-image: url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=2400&q=80&auto=format&fit=crop'); }
+.intro-slide:nth-child(4) { animation-delay: 12s;
+  background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=2400&q=80&auto=format&fit=crop'); }
+.intro-slide:nth-child(5) { animation-delay: 16s;
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=2400&q=80&auto=format&fit=crop'); }
+.intro-slide:nth-child(6) { animation-delay: 20s;
+  background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=2400&q=80&auto=format&fit=crop'); }
+@keyframes slideshow {
+  0%   { opacity: 0; transform: scale(1.0); }
+  4%   { opacity: 1; transform: scale(1.05); }
+  20%  { opacity: 1; transform: scale(1.10); }
+  24%  { opacity: 0; transform: scale(1.12); }
+  100% { opacity: 0; }
+}
+.intro-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.65) 100%),
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%);
+  z-index: 1;
+}
+.intro-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 24px;
+}
+.intro-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: introFade 1.5s 0.3s ease forwards;
+}
+.intro-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(50px, 9vw, 120px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 0%, #e8d4a8 50%, #fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  animation: introFade 1.8s 0.7s ease forwards;
+}
+.intro-title em { font-style: italic; }
+.intro-sub {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: introFade 1.8s 1.1s ease forwards;
+}
+.intro-cities {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 50px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: rgba(255,255,255,0.6);
+  opacity: 0;
+  animation: introFade 1.8s 1.5s ease forwards;
+}
+.intro-cities span { font-size: 20px; margin-right: 8px; }
+.intro-divider {
+  color: rgba(255,255,255,0.3);
+}
+.intro-crew {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: introFade 1.8s 1.8s ease forwards;
+}
+.intro-crew .ic-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.intro-crew .ic-name {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(15px, 1.9vw, 19px);
+  color: rgba(255,255,255,0.95);
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid var(--ic, rgba(255,255,255,0.5));
+}
+.intro-crew .ic-role {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ic, rgba(255,255,255,0.6));
+  opacity: 0.85;
+}
+.intro-enter {
+  display: inline-block;
+  padding: 16px 40px;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.3s;
+  opacity: 0;
+  animation: introFade 1.8s 2.3s ease forwards, pulse-btn 2.5s 3.0s ease infinite;
+}
+.intro-enter:hover {
+  background: white;
+  color: black;
+  border-color: white;
+  letter-spacing: 0.5em;
+}
+@keyframes introFade { to { opacity: 1; } }
+@keyframes pulse-btn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+  50% { box-shadow: 0 0 0 16px rgba(255,255,255,0); }
+}
+
+/* ── DARK MODE ── */
+body.dark { --bg: #0a0e1a; --ink: #f0f0f0; --muted: rgba(240,240,240,0.5); }
+body.dark.theme-mykonos {
+  --bg: #050d1c; --ink: #e0f0ff; --muted: rgba(224,240,255,0.5);
+  --c1: #5dadec; --c2: #7ec8e3; --c3: #a8d8f0;
+  --border: rgba(125,200,227,0.18); --header-bg: rgba(5,13,28,0.92);
+  --orb1: #1a4a7a; --orb2: #0d3559; --orb3: #2a5a8a;
+}
+body.dark.theme-mallorca {
+  --bg: #1a0f00; --ink: #fce8c8; --muted: rgba(252,232,200,0.5);
+  --c1: #f5b84a; --c2: #fad48a; --c3: #fde9b8;
+  --border: rgba(245,184,74,0.18); --header-bg: rgba(26,15,0,0.92);
+  --orb1: #5a3a0a; --orb2: #4a2a05; --orb3: #6a4a1a;
+}
+body.dark.theme-paris {
+  --bg: #0a0820; --ink: #e8e0ff; --muted: rgba(232,224,255,0.5);
+  --c1: #8d7cd6; --c2: #b8a8e8; --c3: #d4c8f5;
+  --border: rgba(184,168,232,0.18); --header-bg: rgba(10,8,32,0.92);
+  --orb1: #2a1a5a; --orb2: #1f1245; --orb3: #3a2a6a;
+}
+body.dark.theme-overview, body.dark.theme-stats, body.dark.theme-assistant {
+  --bg: #0e0c0a; --ink: #f0e8d0; --muted: rgba(240,232,208,0.5);
+  --c1: #d4b87a; --c2: #e8d4a8; --c3: #f2e8d0;
+  --border: rgba(212,184,122,0.18); --header-bg: rgba(14,12,10,0.92);
+  --orb1: #4a3a1a; --orb2: #3a2a10; --orb3: #5a4a2a;
+}
+body.dark .detail-card,
+body.dark .stat-box,
+body.dark .payment-row,
+body.dark .progress-section,
+body.dark .overview-city-card,
+body.dark .ot-box {
+  background: rgba(20,20,30,0.7) !important;
+  color: var(--ink);
+}
+body.dark .detail-card:hover,
+body.dark .payment-row:hover { background: rgba(30,30,45,0.8) !important; }
+body.dark .pr-name { color: var(--ink); }
+body.dark .pr-amount { color: var(--ink); }
+body.dark .city-bg.active { opacity: 0.32; }
+
+/* ── HEADER ACTIONS ── */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+  color: var(--ink);
+}
+.icon-btn:hover {
+  background: var(--c1);
+  color: white;
+  border-color: var(--c1);
+  transform: scale(1.08);
+}
+
+/* ── COUNTDOWN ── */
+.countdown-section {
+  margin-bottom: 32px;
+  padding: 36px 32px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+.countdown-section.has-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)),
+    radial-gradient(ellipse 120% 80% at 50% 120%, rgba(0,0,0,0.5), transparent);
+  z-index: 0;
+}
+.countdown-section:not(.has-bg)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 60% at 50% 0%, rgba(255,255,255,0.2), transparent);
+}
+.countdown-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  opacity: 0.95;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+.cd-cell { padding: 12px 8px; }
+.cd-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 400;
+  line-height: 1;
+  display: block;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+}
+.cd-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.cd-cell + .cd-cell { border-left: 1px solid rgba(255,255,255,0.2); }
+.countdown-pulse {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: white;
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: pulse 2s ease infinite;
+  vertical-align: middle;
+}
+
+/* ── FLIGHT MAP ── */
+.map-section {
+  margin-bottom: 32px;
+  padding: 28px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+body.dark .map-section { background: rgba(20,20,30,0.7); }
+.map-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c1);
+  margin-bottom: 20px;
+}
+.map-svg-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background: linear-gradient(180deg, var(--card), transparent);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.map-svg { width: 100%; height: 100%; }
+.map-route {
+  fill: none;
+  stroke: var(--c1);
+  stroke-width: 2;
+  stroke-dasharray: 8 6;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+.map-route-active {
+  fill: none;
+  stroke: var(--c1);
+  stroke-width: 2.5;
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  animation: drawRoute 4s ease-in-out infinite;
+}
+@keyframes drawRoute {
+  0% { stroke-dashoffset: 1500; opacity: 0.9; }
+  60% { stroke-dashoffset: 0; opacity: 0.9; }
+  100% { stroke-dashoffset: 0; opacity: 0.3; }
+}
+.map-plane {
+  font-size: 24px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+}
+.map-pin {
+  cursor: none;
+  transition: transform 0.3s;
+}
+.map-pin:hover { transform: scale(1.3); }
+.map-pin-dot {
+  fill: var(--c1);
+  stroke: white;
+  stroke-width: 3;
+}
+.map-pin-pulse {
+  fill: var(--c1);
+  opacity: 0.4;
+  animation: pinPulse 2s ease-in-out infinite;
+}
+@keyframes pinPulse {
+  0% { r: 8; opacity: 0.6; }
+  100% { r: 24; opacity: 0; }
+}
+.map-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+/* ── TIMELINE ── */
+.timeline-section {
+  margin-bottom: 32px;
+}
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.timeline-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c2) transparent;
+}
+.timeline-scroll::-webkit-scrollbar { height: 6px; }
+.timeline-scroll::-webkit-scrollbar-thumb { background: var(--c2); border-radius: 3px; }
+.day-card {
+  flex: 0 0 220px;
+  padding: 20px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: none;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+body.dark .day-card { background: rgba(20,20,30,0.7); }
+.day-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.day-card.today {
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  color: white;
+  border-color: transparent;
+}
+.day-card.today .dc-num,
+.day-card.today .dc-date,
+.day-card.today .dc-city,
+.day-card.today .dc-event { color: white !important; }
+.day-card.past { opacity: 0.55; }
+.dc-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.dc-date {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+.dc-flag { font-size: 18px; margin-bottom: 8px; display: block; }
+.dc-city {
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.dc-event {
+  font-size: 11px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+.dc-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+  color: white;
+}
+
+/* ── QUICK LINKS ── */
+.quick-links-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.quick-link {
+  padding: 18px 20px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: none;
+  transition: all 0.2s;
+  font-family: 'EB Garamond', serif;
+}
+body.dark .quick-link { background: rgba(20,20,30,0.7); color: var(--ink); }
+.quick-link:hover {
+  border-color: var(--c1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.ql-icon {
+  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ql-text { flex: 1; }
+.ql-title { font-size: 13px; font-weight: 600; line-height: 1.2; }
+.ql-sub { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'DM Mono', monospace; }
+.ql-arrow { color: var(--muted); font-size: 14px; }
+
+@media (max-width: 768px) {
+  .quick-links-section { grid-template-columns: 1fr 1fr; }
+  .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+  .day-card { flex: 0 0 180px; }
+  .header-actions .icon-btn { width: 32px; height: 32px; font-size: 14px; }
+}
+
+/* ── EXCHANGE RATE WIDGET ── */
+.fx-section {
+  margin-bottom: 32px;
+  padding: 28px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+body.dark .fx-section { background: rgba(20,20,30,0.7); }
+.fx-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.fx-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c1);
+}
+.fx-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fx-live-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+.fx-hero {
+  text-align: center;
+  padding: 14px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.fx-pair {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.fx-rate-big {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(48px, 8vw, 80px);
+  font-weight: 400;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.fx-rate-big .fx-suffix {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.4em;
+  color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
+  margin-left: 8px;
+}
+.fx-converter {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  background: var(--card);
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.fx-input-wrap {
+  position: relative;
+}
+.fx-currency-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.fx-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  background: rgba(255,255,255,0.8);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+body.dark .fx-input { background: rgba(0,0,0,0.3); color: var(--ink); }
+.fx-input:focus { border-color: var(--c1); }
+.fx-arrow {
+  font-size: 24px;
+  color: var(--c1);
+  cursor: none;
+  transition: transform 0.3s;
+}
+.fx-arrow:hover { transform: rotate(180deg); }
+.fx-banks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.fx-bank-row {
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-align: center;
+}
+.fx-bank-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.fx-bank-rate {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--ink);
+  line-height: 1;
+}
+.fx-bank-spread {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.fx-disclaimer {
+  font-size: 10px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 12px;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .fx-banks { grid-template-columns: 1fr 1fr; }
+  .fx-converter { grid-template-columns: 1fr; }
+  .fx-arrow { transform: rotate(90deg); }
+  .fx-arrow:hover { transform: rotate(270deg); }
+}
+
+/* ── FLIGHT & HOTEL BUTTONS ── */
+.flight-btn, .hotel-maps-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: none;
+}
+.flight-btn:hover, .hotel-maps-btn:hover {
+  background: var(--c1);
+  color: white;
+  border-color: var(--c1);
+  transform: translateY(-1px);
+}
+.flight-btn span, .hotel-maps-btn span { font-size: 12px; }
+.hotel-maps-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 12px;
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+/* ── BOARDING PASS (T3) ── */
+.boarding-pass {
+  position: relative;
+  background: var(--card, rgba(255,255,255,0.06));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: transform 0.35s cubic-bezier(.2,.7,.2,1), box-shadow 0.35s, border-color 0.35s;
+}
+.boarding-pass:hover {
+  transform: translateY(-4px);
+  border-color: var(--c1);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.18);
+}
+.bp-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 16px;
+  border-bottom: 1px dashed var(--border);
+}
+.bp-route {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 20px 16px 14px;
+}
+.bp-endpoint { flex-shrink: 0; }
+.bp-code {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(28px, 5vw, 36px);
+  font-weight: 700; line-height: 1; color: var(--ink);
+}
+.bp-city { font-size: 11px; color: var(--c1); margin-top: 5px; }
+.bp-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 2px; }
+.bp-path { flex: 1; display: flex; align-items: center; gap: 6px; color: var(--c1); }
+.bp-line {
+  flex: 1; height: 1px;
+  background: repeating-linear-gradient(90deg, var(--c1) 0 5px, transparent 5px 11px);
+  opacity: 0.6;
+}
+.bp-plane { font-size: 18px; }
+.bp-meta {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 6px;
+  padding: 12px 16px; border-top: 1px solid var(--border);
+}
+.bp-meta-label {
+  font-family: 'DM Mono', monospace; font-size: 8px;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+}
+.bp-meta-val { font-size: 13px; color: var(--ink); margin-top: 3px; }
+.bp-stub {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 14px 16px;
+  border-top: 1px dashed var(--border);
+  background: rgba(0,0,0,0.04);
+}
+body.dark .bp-stub { background: rgba(0,0,0,0.22); }
+.bp-barcode {
+  flex: 1; min-width: 140px;
+  display: flex; align-items: flex-end; gap: 2px; height: 40px;
+}
+.bp-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 13px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.05em; color: var(--ink);
+  text-decoration: none; transition: all 0.2s; cursor: none;
+}
+.bp-btn:hover { background: var(--c1); color: #fff; border-color: var(--c1); transform: translateY(-1px); }
+.bp-btn span { font-size: 12px; }
+.bp-livebar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 16px;
+  border-bottom: 1px dashed var(--border);
+}
+.bp-status {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.05em; padding: 3px 10px;
+  border: 1px solid; border-radius: 20px;
+}
+.bp-flight-cd {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--ink);
+}
+/* ── SPEND ANALYZER (T7) ── */
+.sa-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px; border-radius: 10px;
+  background: var(--card, rgba(255,255,255,0.04));
+}
+.sa-ic { font-size: 26px; flex-shrink: 0; line-height: 1.1; }
+.sa-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.sa-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.sa-sub strong { color: var(--ink); }
+.sa-metrics {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  margin-top: 14px;
+}
+.sa-metric {
+  background: var(--card, rgba(255,255,255,0.04));
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px; text-align: center;
+}
+.sa-m-label {
+  font-family: 'DM Mono', monospace; font-size: 8px;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 5px;
+}
+.sa-m-val { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--ink); }
+@media (max-width: 600px) {
+  .sa-metrics { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── AI ASSISTANT (T5) ── */
+.asst-wrap { max-width: 760px; margin: 0 auto; }
+.asst-head {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.asst-avatar {
+  width: 46px; height: 46px; border-radius: 13px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.asst-thread {
+  display: flex; flex-direction: column; gap: 12px;
+  min-height: 220px; margin-bottom: 16px;
+}
+.asst-msg {
+  max-width: 86%; padding: 12px 15px; font-size: 14px; line-height: 1.7;
+  border-radius: 16px;
+}
+.asst-msg.user {
+  align-self: flex-end;
+  background: var(--c1); color: #fff;
+  border-bottom-right-radius: 5px;
+}
+.asst-msg.bot {
+  align-self: flex-start;
+  background: var(--card, rgba(255,255,255,0.06));
+  border: 1px solid var(--border); color: var(--ink);
+  border-bottom-left-radius: 5px;
+  white-space: pre-wrap;
+}
+.asst-msg.bot.error { border-color: #e2574a; color: #e2574a; }
+.asst-typing { display: inline-flex; gap: 4px; align-items: center; }
+.asst-typing span {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--muted);
+  animation: asstBlink 1.2s infinite both;
+}
+.asst-typing span:nth-child(2) { animation-delay: 0.2s; }
+.asst-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes asstBlink { 0%,80%,100% { opacity: 0.25; } 40% { opacity: 1; } }
+.asst-suggests { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.asst-chip {
+  background: var(--card, rgba(255,255,255,0.06));
+  border: 1px solid var(--border); color: var(--c1);
+  font-size: 12px; padding: 7px 13px; border-radius: 18px;
+  cursor: none; transition: all 0.2s;
+}
+.asst-chip:hover { background: var(--c1); color: #fff; border-color: var(--c1); }
+.asst-inputbar {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card, rgba(255,255,255,0.06));
+  border: 1px solid var(--border); border-radius: 26px;
+  padding: 8px 8px 8px 18px;
+}
+.asst-inputbar input {
+  flex: 1; background: transparent; border: none; outline: none;
+  font-family: inherit; font-size: 14px; color: var(--ink);
+}
+.asst-inputbar input::placeholder { color: var(--muted); }
+.asst-send {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  border: none; color: #fff; font-size: 18px; cursor: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s;
+}
+.asst-send:hover { transform: scale(1.08); }
+.asst-send:disabled { opacity: 0.5; transform: none; }
+.asst-note {
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted);
+  text-align: center; margin-top: 12px;
+}
+
+/* ── TRIP STATS ── */
+.stats-panel { position: relative; }
+.stats-hero-banner {
+  position: relative;
+  padding: 0;
+  margin-bottom: 32px;
+}
+.stats-hero-banner .city-eyebrow { color: var(--c1); }
+.stats-hero-banner .city-name-big { color: var(--ink); }
+.stats-hero-banner .city-tagline { color: var(--muted); }
+
+.stats-mega-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.stat-tile {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 18px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: all 0.3s;
+}
+body.dark .stat-tile { background: rgba(20,20,30,0.7); }
+.stat-tile:hover {
+  transform: translateY(-4px);
+  border-color: var(--c1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.stat-tile-icon { font-size: 32px; margin-bottom: 10px; line-height: 1; }
+.stat-tile-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+.stat-tile-label {
+  font-family: 'EB Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.stat-tile-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.flight-legs {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+body.dark .flight-legs { background: rgba(20,20,30,0.7); }
+.leg-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.leg-row:last-child { border-bottom: none; }
+.leg-route { font-size: 14px; color: var(--ink); }
+.leg-dist { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--c1); }
+.leg-total { border-top: 2px solid var(--ink); margin-top: 4px; padding-top: 14px; }
+.leg-total .leg-route { font-weight: 600; }
+.leg-total .leg-dist { font-family: 'DM Serif Display', serif; font-size: 18px; }
+@media (max-width: 768px) {
+  .stats-mega-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── EXPENSE TRACKER ── */
+.expense-section {
+  margin-bottom: 32px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+body.dark .expense-section { background: rgba(20,20,30,0.7); }
+.expense-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.expense-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c1);
+}
+/* Rate control */
+.rate-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.rate-toggle {
+  display: inline-flex;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.rate-toggle button {
+  padding: 6px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.rate-toggle button.active { background: var(--c1); color: white; }
+.rate-input {
+  width: 64px;
+  padding: 5px 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--ink);
+  text-align: center;
+}
+/* Add form */
+.expense-form {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 20px;
+  padding: 18px;
+  background: var(--card);
+  border-radius: 10px;
+}
+.ef-field { display: flex; flex-direction: column; gap: 5px; }
+.ef-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ef-input, .ef-select {
+  padding: 9px 11px;
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--ink);
+  outline: none;
+}
+body.dark .ef-input, body.dark .ef-select { background: rgba(0,0,0,0.3); color: var(--ink); }
+.ef-input:focus, .ef-select:focus { border-color: var(--c1); }
+.ef-add-btn {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.ef-add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+/* Expense list */
+.expense-list { display: flex; flex-direction: column; gap: 2px; }
+.expense-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.expense-row:hover { background: rgba(0,0,0,0.04); }
+body.dark .expense-row:hover { background: rgba(255,255,255,0.05); }
+.exp-cat-icon { font-size: 18px; }
+.exp-info { min-width: 0; }
+.exp-desc-txt { font-size: 14px; font-weight: 600; color: var(--ink); }
+.exp-sub-txt {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.exp-city-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+}
+.exp-amount-display {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  color: var(--ink);
+  text-align: right;
+  white-space: nowrap;
+}
+.exp-amount-sar {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+}
+.exp-delete {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(220,38,38,0.1);
+  border: 1px solid rgba(220,38,38,0.25);
+  color: #dc2626;
+  font-size: 14px;
+  cursor: none;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.exp-delete:hover { background: #dc2626; color: white; }
+.expense-empty {
+  text-align: center;
+  padding: 30px;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 14px;
+}
+.expense-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.esb-box { text-align: center; }
+.esb-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.esb-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--ink);
+}
+@media (max-width: 768px) {
+  .expense-section { padding: 20px 16px; }
+  .expense-header { flex-direction: column; align-items: stretch; }
+  .rate-control { flex-wrap: wrap; justify-content: flex-start; gap: 8px; }
+  .expense-form { grid-template-columns: 1fr; gap: 14px; padding: 16px; }
+  .ef-add-btn { width: 100%; padding: 14px; margin-top: 4px; }
+  .expense-row { grid-template-columns: auto 1fr auto auto; }
+  .expense-row .exp-city-badge, .expense-row .exp-amount-sar { display: none; }
+  .expense-summary-bar { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ── SHARED MINI TITLE ── */
+.section-mini-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c1);
+  margin-bottom: 16px;
+}
+
+/* ── WORLD CLOCKS ── */
+.clocks-section { margin-bottom: 32px; }
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.clock-card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 12px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+body.dark .clock-card { background: rgba(20,20,30,0.7); }
+.clock-flag { font-size: 22px; margin-bottom: 10px; }
+.clock-analog { display: flex; justify-content: center; margin-bottom: 10px; }
+.clock-face {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--c2);
+  position: relative;
+  background: var(--card);
+}
+.clock-hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom center;
+  border-radius: 4px;
+}
+.clock-hour { width: 3px; height: 18px; background: var(--ink); margin-left: -1.5px; }
+.clock-min  { width: 2px; height: 24px; background: var(--ink); margin-left: -1px; }
+.clock-sec  { width: 1px; height: 26px; background: var(--c1); margin-left: -0.5px; }
+.clock-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 6px; height: 6px;
+  background: var(--c1);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+}
+.clock-city {
+  font-family: 'EB Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.clock-digital {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  color: var(--c1);
+  margin-top: 2px;
+}
+
+/* ── WEATHER ── */
+.weather-section { margin-bottom: 32px; }
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.weather-card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 16px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+body.dark .weather-card { background: rgba(20,20,30,0.7); }
+.wx-flag { font-size: 22px; margin-bottom: 6px; }
+.wx-city {
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.wx-icon { font-size: 40px; margin-bottom: 6px; line-height: 1; }
+.wx-temp {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  color: var(--ink);
+  line-height: 1;
+}
+.wx-desc {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+.wx-sun {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 768px) {
+  .clocks-grid { grid-template-columns: repeat(2, 1fr); }
+  .weather-grid { grid-template-columns: 1fr; }
+}
+/* Pair layout (city pages: city + Riyadh) */
+.clocks-grid-pair { grid-template-columns: repeat(2, 1fr); max-width: 420px; }
+.weather-grid-pair { grid-template-columns: repeat(2, 1fr); }
+.wx-hilo {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.wx-hi { color: #e8890a; }
+.wx-lo { color: #1a8fd1; }
+body.dark .wx-hi { color: #fab74d; }
+body.dark .wx-lo { color: #6ec6e8; }
+@media (max-width: 768px) {
+  .weather-grid-pair { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── ACTIVITIES SECTION ── */
+.activities-section { margin-bottom: 32px; }
+.activities-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.activities-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c1);
+}
+/* Legend */
+.activities-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+body.dark .activities-legend { background: rgba(20,20,30,0.7); }
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-dot.paid { background: #16a34a; }
+.legend-dot.reserved-nopay { background: #d4a017; }
+.legend-dot.pending { background: #dc2626; }
+.legend-dot.idea { background: #9ca3af; }
+.legend-label { font-weight: 600; color: var(--ink); }
+/* Day groups */
+.activity-day {
+  margin-bottom: 14px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+body.dark .activity-day { background: rgba(20,20,30,0.7); }
+.activity-day-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  color: white;
+}
+.adh-day {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.adh-date {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+}
+.activity-items { padding: 6px 0; }
+.activity-row {
+  display: grid;
+  grid-template-columns: 70px 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.activity-row:last-child { border-bottom: none; }
+.activity-row:hover { background: var(--card); }
+.act-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.act-main { display: flex; align-items: center; gap: 10px; }
+.act-icon { font-size: 18px; flex-shrink: 0; }
+.act-name {
+  font-family: 'EB Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.act-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.act-note {
+  font-size: 10px;
+  color: var(--c1);
+  font-style: italic;
+  margin-top: 2px;
+}
+.act-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+.act-maps-link {
+  color: var(--c1);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.act-maps-link:hover { opacity: 0.7; text-decoration: underline; }
+
+/* ── DRESS CODE EXPANDABLE ── */
+.activity-item-wrap { border-bottom: 1px solid var(--border); }
+.activity-item-wrap:last-child { border-bottom: none; }
+.activity-item-wrap .activity-row { border-bottom: none; }
+.act-dc-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 20px;
+  color: #c9a84c;
+  cursor: none;
+  margin-top: 8px;
+  width: fit-content;
+  transition: all 0.2s;
+}
+body.dark .act-dc-toggle { color: #e8d48a; background: rgba(232,212,138,0.12); border-color: rgba(232,212,138,0.3); }
+.act-dc-toggle:hover { background: rgba(201,168,76,0.22); }
+.act-dc-toggle .dc-arrow { transition: transform 0.3s; }
+.act-dc-toggle.open .dc-arrow { transform: rotate(180deg); }
+.act-dc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.act-dc-body.open { max-height: 320px; }
+.act-dc-content {
+  padding: 14px 16px;
+  margin-top: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  border-left: 3px solid #c9a84c;
+}
+.act-dc-main {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.act-dc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.dc-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+.dc-yes { background: rgba(34,134,80,0.15); color: #1f6e44; border: 1px solid rgba(34,134,80,0.3); }
+body.dark .dc-yes { color: #4ade80; }
+.dc-no { background: rgba(220,38,38,0.1); color: #b91c1c; border: 1px solid rgba(220,38,38,0.3); }
+body.dark .dc-no { color: #f87171; }
+.act-dc-note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+/* Clickable departure row */
+.act-clickable { cursor: none; transition: background 0.2s; }
+.act-clickable:hover { background: linear-gradient(90deg, var(--card), transparent); }
+.act-clickable .act-name { color: var(--c1); }
+.act-price {
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.act-price-empty { color: var(--muted); font-size: 12px; font-family: 'DM Mono', monospace; }
+.act-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.act-status.paid { background: rgba(34,134,80,0.15); color: #1f6e44; border: 1px solid rgba(34,134,80,0.3); }
+.act-status.reserved-free { background: rgba(34,134,80,0.1); color: #1f6e44; border: 1px solid rgba(34,134,80,0.25); }
+.act-status.reserved-nopay { background: rgba(212,160,23,0.15); color: #92560a; border: 1px solid rgba(212,160,23,0.3); }
+.act-status.pending { background: rgba(220,38,38,0.12); color: #b91c1c; border: 1px solid rgba(220,38,38,0.3); }
+.act-status.idea { background: rgba(156,163,175,0.15); color: #6b7280; border: 1px solid rgba(156,163,175,0.3); }
+.act-status.info { background: var(--card); color: var(--muted); border: 1px solid var(--border); }
+@media (max-width: 768px) {
+  .activity-row { grid-template-columns: 56px 1fr; gap: 8px; row-gap: 6px; }
+  .act-price, .act-status { grid-column: 2; justify-self: start; }
+}
+
+/* ── 3D GLOBE ── */
+.globe-section {
+  margin-bottom: 32px;
+  padding: 28px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden;
+}
+body.dark .globe-section { background: rgba(20,20,30,0.7); }
+.globe-canvas-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background:
+    radial-gradient(ellipse at center, rgba(20,30,80,0.6) 0%, rgba(5,10,30,0.95) 70%, rgba(0,0,15,1) 100%);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.6);
+}
+#globeCanvas { width: 100%; height: 100%; display: block; }
+.globe-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+.globe-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.globe-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c1);
+  box-shadow: 0 0 8px var(--c1);
+}
+
+/* ════ MOBILE PERFORMANCE OPTIMIZATIONS ════ */
+@media (max-width: 768px) {
+  /* backdrop-filter is very expensive on mobile GPUs — replace with solid bg */
+  .detail-card, .stat-box, .payment-row, .progress-section,
+  .overview-city-card, .ot-box, .map-section, .fx-section,
+  .clock-card, .weather-card, .stat-tile, .flight-legs,
+  .expense-section, .activity-day, .activities-legend,
+  .day-card, .quick-link {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  body:not(.dark) .detail-card, body:not(.dark) .stat-box,
+  body:not(.dark) .payment-row, body:not(.dark) .progress-section,
+  body:not(.dark) .overview-city-card, body:not(.dark) .ot-box,
+  body:not(.dark) .fx-section, body:not(.dark) .clock-card,
+  body:not(.dark) .weather-card, body:not(.dark) .stat-tile,
+  body:not(.dark) .flight-legs, body:not(.dark) .expense-section,
+  body:not(.dark) .activity-day, body:not(.dark) .activities-legend {
+    background: rgba(255,255,255,0.96) !important;
+  }
+  body.dark .detail-card, body.dark .stat-box,
+  body.dark .payment-row, body.dark .progress-section,
+  body.dark .overview-city-card, body.dark .ot-box,
+  body.dark .fx-section, body.dark .clock-card,
+  body.dark .weather-card, body.dark .stat-tile,
+  body.dark .flight-legs, body.dark .expense-section,
+  body.dark .activity-day, body.dark .activities-legend {
+    background: rgba(22,22,32,0.96) !important;
+  }
+  /* Reduce orb blur on mobile */
+  .orb { filter: blur(70px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ════ CINEMATIC INTRO ════ -->
+<div id="intro">
+  <div class="intro-slides">
+    <div class="intro-slide"></div>
+    <div class="intro-slide"></div>
+    <div class="intro-slide"></div>
+    <div class="intro-slide"></div>
+    <div class="intro-slide"></div>
+    <div class="intro-slide"></div>
+  </div>
+  <div class="intro-overlay"></div>
+  <div class="intro-content">
+    <div class="intro-eyebrow">◆ Summer 2026 ◆</div>
+    <div class="intro-title">A <em>Summer</em><br>to Remember</div>
+    <div class="intro-sub">Mykonos · Mallorca · Paris</div>
+    <div class="intro-cities">
+      <div><span>🇬🇷</span>Greece</div>
+      <div class="intro-divider">·</div>
+      <div><span>🇪🇸</span>Spain</div>
+      <div class="intro-divider">·</div>
+      <div><span>🇫🇷</span>France</div>
+    </div>
+    <div class="intro-crew">
+      <div class="ic-member" style="--ic:#f5c84a">
+        <span class="ic-name">Abu Azzam</span>
+        <span class="ic-role">Trip Accountant</span>
+      </div>
+      <div class="ic-member" style="--ic:#5dadec">
+        <span class="ic-name">Abu Faisal</span>
+        <span class="ic-role">Trip Engineer</span>
+      </div>
+      <div class="ic-member" style="--ic:#3ec9b0">
+        <span class="ic-name">Abu Saud</span>
+        <span class="ic-role">Trip Planner</span>
+      </div>
+      <div class="ic-member" style="--ic:#a88ee8">
+        <span class="ic-name">Abu Mosaed</span>
+        <span class="ic-role">Trip King</span>
+      </div>
+    </div>
+    <button class="intro-enter" id="introEnter">Enter the Journey →</button>
+  </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- CITY BACKGROUNDS -->
+<div class="city-bg" id="bg-mykonos"></div>
+<div class="city-bg" id="bg-mallorca"></div>
+<div class="city-bg" id="bg-paris"></div>
+<div class="city-bg" id="bg-overview"></div>
+<div class="city-bg" id="bg-stats"></div>
+
+<div class="bg-orbs">
+  <div class="orb orb1" id="orb1"></div>
+  <div class="orb orb2" id="orb2"></div>
+  <div class="orb orb3" id="orb3"></div>
+</div>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">SUMMER<span>.trip</span></div>
+    <div class="header-trip">
+      <span id="headerFlag" style="font-size:24px;margin-right:10px;display:inline-block;vertical-align:middle;transition:opacity 0.4s">🇬🇷</span>
+      <span id="headerTripText" style="vertical-align:middle">Mykonos, Greece</span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="darkToggle" title="Toggle dark mode">🌙</button>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)"><span class="live-dot"></span>4 Travelers</span>
+    </div>
+  </header>
+
+  <!-- CITY NAV -->
+  <nav class="city-nav" id="cityNav">
+    <button class="city-btn" data-city="overview">
+      <span>🗺️</span> Overview
+    </button>
+    <button class="city-btn active" data-city="mykonos">
+      <span class="city-flag">🇬🇷</span> Mykonos <span class="city-days">4N</span>
+    </button>
+    <button class="city-btn" data-city="mallorca">
+      <span class="city-flag">🇪🇸</span> Mallorca <span class="city-days">7N</span>
+    </button>
+    <button class="city-btn" data-city="paris">
+      <span class="city-flag">🇫🇷</span> Paris <span class="city-days">5N</span>
+    </button>
+    <button class="city-btn" data-city="stats">
+      <span>📊</span> Trip Stats
+    </button>
+    <button class="city-btn" data-city="assistant">
+      <span>✨</span> Assistant
+    </button>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content" id="mainContent"></div>
+
+</div>
+
+<script>
+// ── CONSTANTS ──
+const EUR = 4.5; // 1 EUR = 4.5 SAR
+const TRAVELERS = 4;
+const TRIP_DAYS = 17; // Aug 11–27
+
+// ── CREW IDENTITY ──
+// Each member: name, title (لقب), emoji badge, and signature color.
+// `color` is used for the profile dot and accents wherever the name appears.
+const MEMBERS = [
+  { name:"Abu Azzam",  title:"محاسب السفرة",  badge:"🧮", color:"#e0a832", colorDark:"#f5c84a" },
+  { name:"Abu Faisal", title:"مهندس السفرة",  badge:"🛠️", color:"#3a7bd5", colorDark:"#5dadec" },
+  { name:"Abu Saud",   title:"مخطط السفرة",   badge:"🗺️", color:"#1d9e8a", colorDark:"#3ec9b0" },
+  { name:"Abu Mosaed", title:"ملك السفرة",    badge:"👑", color:"#7c5cd6", colorDark:"#a88ee8" },
+];
+function memberColor(name) {
+  const m = MEMBERS.find(x => x.name === name);
+  if (!m) return null;
+  return document.body.classList.contains('dark') ? m.colorDark : m.color;
+}
+
+// ── FINANCIAL DATA ──
+// All amounts in SAR
+const finance = {
+  totalBudget: 160000,
+  budgetPerPerson: 40000,
+  budgetMax: 200000, // 50k per person
+
+  // ▸ PAID by Abu Azzam (round 1 — already settled by other 3 members)
+  flights_saudia_pp: 1289,           // each paid their own
+  flights_mykonos_mallorca: 8810,    // paid by Abu Azzam
+  flights_mallorca_paris: 5200,      // paid by Abu Azzam
+  hotel_mallorca: 25704,             // paid by Abu Azzam
+
+  // ▸ NEW round — PAID by Abu Azzam (not yet settled)
+  hotel_paris: 10368.86,             // paid by Abu Azzam
+  car_mallorca: 4458.83,             // paid by Abu Azzam — Sixt confirmed
+  purobeach_mallorca: 3214.83,       // paid by Abu Azzam
+  um_beach_mallorca: 4456.03,        // paid by Abu Azzam
+  beso_beach_mallorca: 5625.95,      // paid by Abu Azzam
+
+  // ▸ NEW round — PAID by Abu Faisal (not yet settled)
+  hotel_mykonos: 16400,              // paid by Abu Faisal
+  santanna_mykonos: 1150,            // paid by Abu Faisal
+  cava_paradiso_mykonos: 1800,       // paid by Abu Faisal
+  lio_mykonos: 2250,                 // paid by Abu Faisal
+};
+
+// ─── ROUND 1 (SETTLED) ───
+// Abu Azzam paid for the group, but the other 3 already paid him back his share
+const azzamPaidR1 = finance.flights_mykonos_mallorca + finance.flights_mallorca_paris + finance.hotel_mallorca;
+// = 8810 + 5200 + 25704 = 39,714 SAR
+
+// ─── ROUND 2 (NEW, NOT SETTLED) ───
+const azzamPaidR2 = finance.hotel_paris + finance.car_mallorca + finance.purobeach_mallorca + finance.um_beach_mallorca + finance.beso_beach_mallorca;
+// = 10368.86 + 4458.83 + 3214.83 + 4456.03 + 5625.95 = 28,124.50 SAR
+
+const faisalPaidR2 = finance.hotel_mykonos + finance.santanna_mykonos + finance.cava_paradiso_mykonos + finance.lio_mykonos;
+// = 16400 + 1150 + 1800 + 2250 = 21,600 SAR
+
+// Per-person share of round 2 payments
+const azzamR2PerPerson  = azzamPaidR2 / TRAVELERS;   // 7,031.13 SAR each owes Azzam
+const faisalR2PerPerson = faisalPaidR2 / TRAVELERS;  // 5,400 SAR each owes Faisal
+
+// Net between Azzam and Faisal (they owe each other)
+// Faisal owes Azzam 7031.13, Azzam owes Faisal 5400 → net: Faisal pays Azzam 1631.13
+const faisalToAzzamNet = azzamR2PerPerson - faisalR2PerPerson; // 1631.13
+
+// Total Azzam should receive from group (round 2)
+const azzamReceivesTotal = (azzamR2PerPerson * 2) + faisalToAzzamNet; // 2 members + faisal net = 15,693.39
+const faisalReceivesTotal = faisalR2PerPerson * 2; // 10,800
+
+// ─── TOTAL EXPENSE TRACKING ───
+const totalConfirmedPaid =
+  (finance.flights_saudia_pp * TRAVELERS) +
+  azzamPaidR1 +
+  azzamPaidR2 +
+  faisalPaidR2;
+// = 5156 + 39714 + 28124.50 + 21600 = 94,594.50 SAR
+
+const totalPending = 0; // everything is now paid
+
+const grandTotal = totalConfirmedPaid + totalPending;
+// = 94,594.50 SAR
+
+const netRemaining = finance.totalBudget - grandTotal;
+// = 160000 - 94594.50 = 65,405.50 SAR
+
+const dailyAllowanceTotal = Math.round(netRemaining / TRIP_DAYS);
+const dailyAllowancePP   = Math.round(dailyAllowanceTotal / TRAVELERS);
+
+// ── CITY DATA ──
+const dressCodes = {"Interni": {"code": "Smart Elegant", "yes": ["Smart casual", "Stylish dresses", "Designer sneakers OK"], "no": ["No shorts", "No flip-flops"], "note": "Chic garden restaurant & cocktail bar in Mykonos Town. Lean polished — fashion-forward evening wear fits the crowd."}, "Santanna": {"code": "Beach Chic", "yes": ["Stylish swimwear", "Kaftans & cover-ups", "Designer sandals"], "no": ["No plain sportswear"], "note": "Vibrant beach club with a lively pool-party energy. Bright, bold beachwear works perfectly."}, "Scorpios": {"code": "Boho Chic / Island Elegant", "yes": ["White & natural fabrics", "Linen & kaftans", "Closed shoes (evening)"], "no": ["No flip-flops at dinner", "No sportswear"], "note": "Iconic bohemian-luxury club. Earth tones and effortless island-chic. Men: collared shirts for evening."}, "Cava Paradiso": {"code": "Night Club Sharp", "yes": ["Smart casual", "Designer sneakers OK", "Stylish streetwear"], "no": ["No shorts", "No sandals", "No sportswear"], "note": "World-famous open-air super-club with top DJs. Crowd dresses sharp — fashion-forward looks recommended."}, "Principote": {"code": "Beach Chic", "yes": ["Chic swimwear", "Linen sets", "Sundresses"], "no": ["No sportswear"], "note": "Stylish beach club on Panormos Bay. Daytime beach-glam, transitions to dressier in the evening."}, "Zuma": {"code": "Smart Casual / Upscale", "yes": ["Smart casual", "Elegant dresses", "Polished resort wear"], "no": ["No beachwear", "No flip-flops"], "note": "High-end Japanese izakaya dining. Dress polished — it is a refined dinner setting."}, "Nammos": {"code": "Luxe Beach Glam", "yes": ["Designer swimwear", "Elegant cover-ups", "Statement accessories"], "no": ["No plain casualwear"], "note": "The legendary Psarou beach club — see-and-be-seen. Bring your most glam beach look."}, "Lio Mykonos": {"code": "Glamorous / Elegant", "yes": ["Cocktail attire", "Designer dresses", "Smart shirts & trousers"], "no": ["No shorts", "No beachwear"], "note": "Cabaret dinner-show — the dress-up highlight. Go bold and glam, it is a stylish crowd."}, "Queen": {"code": "Night Club Elegant", "yes": ["Elegant eveningwear", "Smart shirts", "Stylish heels"], "no": ["No shorts", "No flip-flops", "No sportswear"], "note": "Upscale nightclub for the last dance. Dress sharp and elegant."}, "Nikki Beach": {"code": "White Party Chic", "yes": ["White outfits encouraged", "Stylish swimwear", "Chic cover-ups"], "no": ["No sportswear"], "note": "Famous luxury beach club — white-themed glam is the signature. Dress to impress."}, "House of Son Amar": {"code": "Smart Elegant", "yes": ["Smart casual", "Dresses", "Collared shirts"], "no": ["No shorts", "No flip-flops"], "note": "Spectacular dinner-show in a historic estate. Dress up for a memorable evening."}, "Beso Beach": {"code": "Beach Chic / Boho", "yes": ["Stylish swimwear", "Linen & kaftans", "Designer sandals"], "no": ["No plain sportswear"], "note": "Mediterranean boho beach club with Ibiza energy. Effortless beach-glam works best."}, "Tabana": {"code": "Smart Casual", "yes": ["Smart casual", "Summer dresses", "Polished resort wear"], "no": ["No beachwear"], "note": "Stylish restaurant & lounge. Keep it polished-casual for dinner."}, "Lío Mallorca": {"code": "Glamorous / Elegant", "yes": ["Cocktail attire", "Elegant dresses", "Smart shirts & trousers"], "no": ["No shorts", "No beachwear"], "note": "Cabaret dinner & nightclub on the marina. The dress-up night — go glam."}, "Purobeach Palma": {"code": "Beach Chic", "yes": ["Stylish swimwear", "White & pastels", "Chic cover-ups"], "no": ["No sportswear"], "note": "Chillout beach club with sunset DJ sets. Relaxed Mediterranean chic."}, "Sea Club": {"code": "Smart Beach Casual", "yes": ["Smart casual", "Resort wear", "Stylish sandals"], "no": ["No plain sportswear"], "note": "Seaside club at Balneario Illetas. Relaxed but stylish vibe."}, "UM Beach": {"code": "Beach Chic", "yes": ["Stylish swimwear", "Linen sets", "Designer sandals"], "no": ["No sportswear"], "note": "Trendy beach house in Portals. Effortless beach-glam fits the scene."}, "Restaurante Illeta": {"code": "Smart Casual", "yes": ["Smart casual", "Summer elegant", "Polished resort wear"], "no": ["No beachwear", "No flip-flops"], "note": "Scenic seaside fine-dining. Dress polished for the cliffside views."}, "NU Beach": {"code": "Beach Chic", "yes": ["Stylish swimwear", "Cover-ups", "Chic sandals"], "no": ["No sportswear"], "note": "Relaxed beach club on the north coast. Easy beach-chic style."}};
+
+const cities = {
+  mykonos: {
+    name: "Mykonos", country: "Greece", flag: "🇬🇷", nextCity: "mallorca",
+    tagline: "Whitewashed Cycladic Beauty & Azure Seas",
+    dates: "11 Aug – 15 Aug, 2026",
+    nights: 4, travelers: TRAVELERS,
+    // Flight in: SV199 — Riyadh 12:00 → Mykonos 16:00
+    // Flight out: EW2661 — Mykonos 10:15 → Stuttgart 12:05
+    flightIn:  { airline:"Saudi Airlines", flight:"SV199",  dep:"Riyadh (RUH)",   depTime:"12:00", arr:"Mykonos (JMK)", arrTime:"16:00", date:"11 Aug", radar:"https://www.flightradar24.com/data/flights/sv199", airportMaps:"https://www.google.com/maps/search/?api=1&query=Mykonos%20Airport%20JMK", airportName:"Mykonos Airport" },
+    flightOut: { airline:"Eurowings",      flight:"EW2661", dep:"Mykonos (JMK)",  depTime:"10:15", arr:"Stuttgart (STR)", arrTime:"12:05", date:"15 Aug", radar:"https://www.flightradar24.com/data/flights/ew2661", airportMaps:"https://www.google.com/maps/search/?api=1&query=Mykonos%20Airport%20JMK", airportName:"Mykonos Airport",
+                 transit: { from:"Stuttgart", layover:"2h 10min", nextFlight:"EW2586", nextDep:"14:15", nextArr:"16:15 (Mallorca)" } },
+    hotel: { name: "Tagoo Hills", status:"confirmed", platform:"Booking.com", notes:"Confirmed ✓ — Fully paid · Stunning Cycladic views", checkIn:"11 Aug", checkOut:"15 Aug", mapsUrl:"https://maps.app.goo.gl/SVa1EPs6CMoioztj6?g_st=ic" },
+    costs: [
+      { icon:"✈️", label:"Flights (SV199)", amount:1289*4, amountPP:1289, note:"Each paid own", paidBy:"Each member", status:"paid", pct:5 },
+      { icon:"🏨", label:"Hotel — Tagoo Hills (4 Nights)", amount:16400, amountPP:4100, note:"~€3,644 total", paidBy:"Abu Faisal", status:"paid", pct:70 },
+      { icon:"🍽️", label:"Santanna Beach Club", amount:1150, amountPP:287.50, note:"~€256 total", paidBy:"Abu Faisal", status:"paid", pct:5 },
+      { icon:"🎵", label:"Cava Paradiso", amount:1800, amountPP:450, note:"~€400 total", paidBy:"Abu Faisal", status:"paid", pct:8 },
+      { icon:"🎭", label:"Lio Mykonos", amount:2250, amountPP:562.50, note:"~€500 total", paidBy:"Abu Faisal", status:"paid", pct:10 },
+    ],
+    highlights: [
+      { emoji:"🏖️", name:"Paradise Beach", type:"Beach" },
+      { emoji:"⛵", name:"Sunset Sailing", type:"Experience" },
+      { emoji:"🌊", name:"Psarou Beach Club", type:"Leisure" },
+      { emoji:"🍹", name:"Little Venice Bars", type:"Nightlife" },
+      { emoji:"🏛️", name:"Delos Island Day Trip", type:"Culture" },
+      { emoji:"🛍️", name:"Mykonos Town (Chora)", type:"Explore" },
+    ],
+    tips: [
+      { bold:"Rent an ATV", text:"Best way to explore the island. Roads are narrow — ATV or scooter beats any car." },
+      { bold:"Beach clubs book up", text:"Paradise & Super Paradise clubs require table reservations in August. Book 2 weeks ahead." },
+      { bold:"Delos Island", text:"30-min ferry from Old Port. UNESCO site — ancient ruins and no permanent residents." },
+      { bold:"Nights in Mykonos Town", text:"Little Venice is magical at sunset. Get there before 19:00 for a terrace seat." },
+    ],
+    quickLinks: [
+      { icon:"🏨", title:"Tagoo Hills Hotel", sub:"Open in Maps", url:"https://maps.app.goo.gl/SVa1EPs6CMoioztj6?g_st=ic" },
+      { icon:"✈️", title:"Track SV199", sub:"Flightradar24", url:"https://www.flightradar24.com/data/flights/sv199" },
+    ],
+    activities: [
+      { date:"11 Aug", day:"Day 1", items:[
+        { time:"16:00", name:"Arrive to Mykonos", icon:"✈️", type:"Arrival", status:"info", price:null },
+        { time:"23:00", name:"Interni", icon:"🍷", type:"Nightlife", status:"reserved-free", price:null, maps:"https://maps.app.goo.gl/UiTo8hyCbNWGNjzz7?g_st=ic", dist:"~1.5 km", drive:"~5 min" },
+      ]},
+      { date:"12 Aug", day:"Day 2", items:[
+        { time:"12:00", name:"Santanna", icon:"🏖️", type:"Beach Club", status:"paid", price:250, maps:"https://www.google.com/maps/search/?api=1&query=SantAnna%20Mykonos", dist:"7.5 km", drive:"~13 min" },
+        { time:"19:30", name:"Scorpios", icon:"🍽️", type:"Dining", status:"reserved-free", price:null, maps:"https://www.google.com/maps/search/?api=1&query=Scorpios%20Mykonos", dist:"7.7 km", drive:"~13 min" },
+        { time:"23:30", name:"Cava Paradiso", icon:"🍷", type:"Nightlife", status:"paid", price:400, maps:"https://www.google.com/maps/search/?api=1&query=Cavo%20Paradiso%20Mykonos", dist:"8.1 km", drive:"~14 min" },
+      ]},
+      { date:"13 Aug", day:"Day 3", items:[
+        { time:"13:00", name:"Principote", icon:"🏖️", type:"Beach Club", status:"idea", price:null, note:"Quite far", maps:"https://www.google.com/maps/search/?api=1&query=Principote%20Mykonos", dist:"5.1 km", drive:"~10 min" },
+        { time:"19:15", name:"Zuma", icon:"🍽️", type:"Dining", status:"reserved-free", price:null, note:"🚗 Needs a car — far location", maps:"https://www.google.com/maps/search/?api=1&query=Zuma%20Mykonos", dist:"0.7 km", drive:"~4 min" },
+        { time:"Night", name:"Nightlife (TBD)", icon:"🍷", type:"Nightlife", status:"idea", price:null },
+      ]},
+      { date:"14 Aug", day:"Day 4", items:[
+        { time:"13:30", name:"Nammos", icon:"🏖️", type:"Beach & Dining", status:"pending", price:null, maps:"https://www.google.com/maps/search/?api=1&query=Nammos%20Mykonos", dist:"6.1 km", drive:"~11 min" },
+        { time:"21:00", name:"Lio Mykonos (Show)", icon:"🎭", type:"Show", status:"paid", price:500, maps:"https://www.google.com/maps/search/?api=1&query=Lio%20Mykonos", dist:"1.5 km", drive:"~5 min" },
+        { time:"00:00", name:"Queen — \"Last Dance\" 🕺", icon:"🍷", type:"Nightlife", status:"reserved-nopay", price:null, note:"On hold", maps:"https://www.google.com/maps/search/?api=1&query=Queen%20of%20Mykonos", dist:"1.4 km", drive:"~5 min" },
+      ]},
+      { date:"15 Aug", day:"Day 5", items:[
+        { time:"10:15", name:"Departing to Mallorca", icon:"✈️", type:"Departure", status:"info", price:null, note:"via Stuttgart (STR)" },
+      ]},
+    ],
+  },
+  mallorca: {
+    name: "Mallorca", country: "Spain", flag: "🇪🇸", nextCity: "paris",
+    tagline: "Mediterranean Gem — Villa Life & Hidden Coves",
+    dates: "15 Aug – 22 Aug, 2026",
+    nights: 7, travelers: TRAVELERS,
+    flightIn:  { airline:"Eurowings", flight:"EW2586", dep:"Stuttgart (STR)", depTime:"14:15", arr:"Mallorca (PMI)", arrTime:"16:15", date:"15 Aug", radar:"https://www.flightradar24.com/data/flights/ew2586", airportMaps:"https://www.google.com/maps/search/?api=1&query=Palma%20de%20Mallorca%20Airport%20PMI", airportName:"Palma Airport",
+                 transit: { from:"Stuttgart", note:"Connecting from Mykonos via EW2661" } },
+    flightOut: { airline:"Iberia", flight:"IB5671", dep:"Mallorca (PMI)", depTime:"09:05", arr:"Paris CDG", arrTime:"11:10", date:"22 Aug", radar:"https://www.flightradar24.com/data/flights/ib5671", airportMaps:"https://www.google.com/maps/search/?api=1&query=Palma%20de%20Mallorca%20Airport%20PMI", airportName:"Palma Airport" },
+    hotel: { name: "Private Airbnb Villa", status:"confirmed", platform:"Airbnb", notes:"Confirmed ✓ — Full villa for the group", checkIn:"15 Aug", checkOut:"22 Aug", mapsUrl:"https://maps.app.goo.gl/3w6MmrgCdjYSDsZ7A?g_st=ic" },
+    car: { model:"BMW Convertible", company:"Sixt", status:"confirmed", pickup:"Mallorca Airport (PMI)", dropoff:"Mallorca Airport (PMI)", notes:"Confirmed ✓ — Fully paid · Booked via Sixt" },
+    costs: [
+      { icon:"✈️", label:"Flights Mykonos → Mallorca (EW2661+EW2586)", amount:8810, amountPP:2202.50, note:"~€1,958 total", paidBy:"Abu Azzam", status:"paid", pct:18 },
+      { icon:"🏠", label:"Airbnb Villa — 7 Nights", amount:25704, amountPP:6426, note:"~€5,712 total", paidBy:"Abu Azzam", status:"paid", pct:51 },
+      { icon:"🚗", label:"BMW Convertible — Sixt (7 Days)", amount:4458.83, amountPP:1114.71, note:"~€991 total", paidBy:"Abu Azzam", status:"paid", pct:9 },
+      { icon:"🏖️", label:"Purobeach", amount:3214.83, amountPP:803.71, note:"~€714 total", paidBy:"Abu Azzam", status:"paid", pct:6 },
+      { icon:"🏖️", label:"UM Beach", amount:4456.03, amountPP:1114.01, note:"~€990 total", paidBy:"Abu Azzam", status:"paid", pct:9 },
+      { icon:"🏖️", label:"Beso Beach", amount:5625.95, amountPP:1406.49, note:"~€1,250 total", paidBy:"Abu Azzam", status:"paid", pct:7 },
+    ],
+    highlights: [
+      { emoji:"🏰", name:"Palma Old Town", type:"Culture" },
+      { emoji:"🏖️", name:"Cala Mondragó Beach", type:"Beach" },
+      { emoji:"🚗", name:"BMW Coastal Drive", type:"Experience" },
+      { emoji:"⛵", name:"Boat Charter Day", type:"Leisure" },
+      { emoji:"🍷", name:"Wine & Tapas Evening", type:"Food" },
+      { emoji:"🌅", name:"Cap de Formentor", type:"Scenic" },
+    ],
+    tips: [
+      { bold:"BMW Convertible route", text:"Drive north to Cap de Formentor — one of Europe's most dramatic coastal roads." },
+      { bold:"Boat charter", text:"Split a boat for a day and visit coves only reachable by sea. Worth every euro." },
+      { bold:"August crowds", text:"August is peak season. Cala d'Or and Es Trenc beaches are less crowded than Palma." },
+      { bold:"Palma Cathedral", text:"La Seu is spectacular at golden hour. Free entry on certain mornings — check ahead." },
+    ],
+    quickLinks: [
+      { icon:"🏠", title:"Airbnb Villa", sub:"Open in Maps", url:"https://maps.app.goo.gl/mrPpjTPmYnc66VP58?g_st=ic" },
+      { icon:"✈️", title:"Track EW2586", sub:"Arrival flight", url:"https://www.flightradar24.com/data/flights/ew2586" },
+      { icon:"✈️", title:"Track IB5671", sub:"Departure flight", url:"https://www.flightradar24.com/data/flights/ib5671" },
+    ],
+    activities: [
+      { date:"15 Aug", day:"Day 1", items:[
+        { time:"16:30", name:"Arrive to Mallorca", icon:"✈️", type:"Arrival", status:"info", price:null },
+      ]},
+      { date:"16 Aug", day:"Day 2", items:[
+        { time:"12:30", name:"Nikki Beach", icon:"🏖️", type:"Beach Club", status:"reserved-nopay", price:700, maps:"https://www.google.com/maps/search/?api=1&query=Nikki%20Beach%20Mallorca", dist:"16.7 km", drive:"~25 min" },
+        { time:"20:30", name:"House of Son Amar", icon:"🎭", type:"Show", status:"idea", price:null, maps:"https://www.google.com/maps/search/?api=1&query=House%20of%20Son%20Amar%20Mallorca", dist:"15.1 km", drive:"~23 min" },
+      ]},
+      { date:"17 Aug", day:"Day 3", items:[
+        { time:"12:30", name:"Beso Beach", icon:"🏖️", type:"Beach Club", status:"paid", price:1260, maps:"https://www.google.com/maps/search/?api=1&query=Beso%20Beach%20Mallorca", dist:"15.2 km", drive:"~23 min" },
+        { time:"20:30", name:"Tabana", icon:"🍽️", type:"Dining", status:"idea", price:null, maps:"https://www.google.com/maps/search/?api=1&query=Restaurante%20Tabana%20Palma", dist:"13.9 km", drive:"~22 min" },
+      ]},
+      { date:"18 Aug", day:"Day 4", items:[
+        { time:"20:30", name:"Lío Mallorca", icon:"🍷", type:"Nightlife", status:"idea", price:null, maps:"https://www.google.com/maps/search/?api=1&query=Lio%20Mallorca%20Palma", dist:"2.3 km", drive:"~6 min" },
+      ]},
+      { date:"19 Aug", day:"Day 5", items:[
+        { time:"12:30", name:"Purobeach Palma", icon:"🏖️", type:"Beach Club", status:"paid", price:750, maps:"https://www.google.com/maps/search/?api=1&query=Purobeach%20Palma", dist:"9.6 km", drive:"~16 min" },
+        { time:"20:30", name:"Sea Club", icon:"🍷", type:"Nightlife", status:"idea", price:null, maps:"https://www.google.com/maps/search/?api=1&query=Balneario%20Illetas%20Beach%20Club", dist:"8.2 km", drive:"~14 min" },
+      ]},
+      { date:"20 Aug", day:"Day 6", items:[
+        { time:"12:30", name:"UM Beach", icon:"🏖️", type:"Beach Club", status:"paid", price:1000, maps:"https://www.google.com/maps/search/?api=1&query=UM%20Beach%20House%20Portals", dist:"11.6 km", drive:"~18 min" },
+        { time:"20:30", name:"Restaurante Illeta", icon:"🍽️", type:"Dining", status:"idea", price:null, maps:"https://www.google.com/maps/search/?api=1&query=Restaurant%20Illeta%20Camp%20de%20Mar", dist:"27.1 km", drive:"~39 min" },
+      ]},
+      { date:"21 Aug", day:"Day 7", items:[
+        { time:"12:30", name:"NU Beach", icon:"🏖️", type:"Beach Club", status:"reserved-nopay", price:1400, maps:"https://www.google.com/maps/search/?api=1&query=NU%20Mallorca%20Playa%20de%20Muro", dist:"67.9 km", drive:"~94 min", note:"Far — north of island" },
+      ]},
+      { date:"22 Aug", day:"Day 8", items:[
+        { time:"10:00", name:"Departing to Paris", icon:"✈️", type:"Departure", status:"info", price:null },
+      ]},
+    ],
+  },
+  paris: {
+    name: "Paris", country: "France", flag: "🇫🇷", nextCity: "overview",
+    tagline: "La Ville Lumière — The Grand Finale",
+    dates: "22 Aug – 27 Aug, 2026",
+    nights: 5, travelers: TRAVELERS,
+    flightIn:  { airline:"Iberia", flight:"IB5671", dep:"Mallorca (PMI)", depTime:"09:05", arr:"Paris CDG", arrTime:"11:10", date:"22 Aug", radar:"https://www.flightradar24.com/data/flights/ib5671", airportMaps:"https://www.google.com/maps/search/?api=1&query=Paris%20Charles%20de%20Gaulle%20Airport%20CDG", airportName:"Paris CDG" },
+    flightOut: { airline:"Saudi Airlines", flight:"SV144", dep:"Paris CDG", depTime:"11:30", arr:"Riyadh (RUH)", arrTime:"18:45", date:"27 Aug", radar:"https://www.flightradar24.com/data/flights/sv144", airportMaps:"https://www.google.com/maps/search/?api=1&query=Paris%20Charles%20de%20Gaulle%20Airport%20CDG", airportName:"Paris CDG" },
+    hotel: { name: "Sweett - Artois Haussman", status:"confirmed", platform:"Booking.com", notes:"Confirmed ✓ — Fully paid · 8th arrondissement, near Champs-Élysées", checkIn:"22 Aug", checkOut:"27 Aug", mapsUrl:"https://maps.app.goo.gl/k31uKztjQJnuuSme6?g_st=ic" },
+    costs: [
+      { icon:"✈️", label:"Flights Mallorca → Paris (IB5671)", amount:5200, amountPP:1300, note:"~€1,156 total", paidBy:"Abu Azzam", status:"paid", pct:33 },
+      { icon:"🏨", label:"Sweett - Artois Haussman (5 Nights)", amount:10368.86, amountPP:2592.22, note:"~€2,304 total", paidBy:"Abu Azzam", status:"paid", pct:67 },
+    ],
+    highlights: [
+      { emoji:"🗼", name:"Eiffel Tower", type:"Iconic" },
+      { emoji:"🖼️", name:"The Louvre Museum", type:"Art" },
+      { emoji:"⛵", name:"Seine River Cruise", type:"Experience" },
+      { emoji:"🥂", name:"Rooftop Champagne", type:"Luxury" },
+      { emoji:"🍞", name:"Saint-Germain Cafés", type:"Food" },
+      { emoji:"🛍️", name:"Champs-Élysées", type:"Shopping" },
+    ],
+    tips: [
+      { bold:"CDG to City Center", text:"RER B train takes 35min and costs €11. Skip the €70+ taxi if you have luggage space." },
+      { bold:"Paris Museum Pass", text:"4-day pass covers Louvre, Musée d'Orsay, Versailles and 50+ more. Pre-book online." },
+      { bold:"Return flight SV144", text:"Departs 11:30 — plan to be at CDG by 09:00. Leave hotel no later than 08:00." },
+      { bold:"Final dinner", text:"Book ahead for a terrace dinner near the Eiffel Tower on your last evening." },
+    ],
+    quickLinks: [
+      { icon:"🏨", title:"Sweett - Artois Haussman", sub:"Open in Maps", url:"https://maps.app.goo.gl/k31uKztjQJnuuSme6?g_st=ic" },
+      { icon:"✈️", title:"Track SV144", sub:"Return flight", url:"https://www.flightradar24.com/data/flights/sv144" },
+    ],
+  },
+};
+
+// ── DAILY TIMELINE ──
+const tripTimeline = [
+  { day:1,  date:"11 Aug", flag:"🇸🇦→🇬🇷", city:"Riyadh → Mykonos", event:"Departure 12:00 · Arrival 16:00 · Check-in" },
+  { day:2,  date:"12 Aug", flag:"🇬🇷", city:"Mykonos", event:"Beach day — Paradise Beach & evening at Little Venice" },
+  { day:3,  date:"13 Aug", flag:"🇬🇷", city:"Mykonos", event:"Delos Island day trip — UNESCO ruins by ferry" },
+  { day:4,  date:"14 Aug", flag:"🇬🇷", city:"Mykonos", event:"Sunset sailing & last night out in Chora" },
+  { day:5,  date:"15 Aug", flag:"🇬🇷→🇪🇸", city:"Mykonos → Mallorca", event:"Flights via Stuttgart · Arrive 16:15 · Pick up BMW" },
+  { day:6,  date:"16 Aug", flag:"🇪🇸", city:"Mallorca", event:"Settle in villa · Palma Old Town tour" },
+  { day:7,  date:"17 Aug", flag:"🇪🇸", city:"Mallorca", event:"Coastal drive: Cap de Formentor in BMW" },
+  { day:8,  date:"18 Aug", flag:"🇪🇸", city:"Mallorca", event:"Boat charter day — hidden coves & swimming" },
+  { day:9,  date:"19 Aug", flag:"🇪🇸", city:"Mallorca", event:"Cala Mondragó & beach club afternoon" },
+  { day:10, date:"20 Aug", flag:"🇪🇸", city:"Mallorca", event:"Palma Cathedral · Wine & tapas evening" },
+  { day:11, date:"21 Aug", flag:"🇪🇸", city:"Mallorca", event:"Free day — repeat your favorite spot" },
+  { day:12, date:"22 Aug", flag:"🇪🇸→🇫🇷", city:"Mallorca → Paris", event:"Return BMW · Flight 09:05 · Arrive Paris 11:10" },
+  { day:13, date:"23 Aug", flag:"🇫🇷", city:"Paris", event:"Eiffel Tower & Seine River sunset" },
+  { day:14, date:"24 Aug", flag:"🇫🇷", city:"Paris", event:"The Louvre & afternoon Saint-Germain cafés" },
+  { day:15, date:"25 Aug", flag:"🇫🇷", city:"Paris", event:"Champs-Élysées shopping & rooftop champagne" },
+  { day:16, date:"26 Aug", flag:"🇫🇷", city:"Paris", event:"Free explore day · Final group dinner" },
+  { day:17, date:"27 Aug", flag:"🇫🇷→🇸🇦", city:"Paris → Riyadh", event:"Departure 11:30 · Arrive Riyadh 18:45 · Trip ends" },
+];
+
+const overviewData = {
+  totalBudget: 160000,
+  budgetMax: 200000,
+  totalConfirmedPaid,
+  totalPending,
+  grandTotal,
+  netRemaining,
+  dailyAllowanceTotal,
+  dailyAllowancePP,
+  azzamPaidR1,
+  azzamPaidR2,
+  faisalPaidR2,
+  azzamR2PerPerson,
+  faisalR2PerPerson,
+  faisalToAzzamNet,
+  azzamReceivesTotal,
+  faisalReceivesTotal,
+  exchangeRate: EUR,
+  categories: [
+    // Flights
+    { icon:"✈️", name:"Saudi Airlines (SV199 + SV144)", amount: 1289*4, paidBy:"Each member", status:"paid", settled:true },
+    { icon:"✈️", name:"Mykonos → Mallorca (EW2661+EW2586)", amount: 8810, paidBy:"Abu Azzam", status:"paid", settled:true },
+    { icon:"✈️", name:"Mallorca → Paris (IB5671)", amount: 5200, paidBy:"Abu Azzam", status:"paid", settled:true },
+    // Hotels
+    { icon:"🏨", name:"Tagoo Hills — Mykonos (4N)", amount: 16400, paidBy:"Abu Faisal", status:"paid", settled:false },
+    { icon:"🏠", name:"Airbnb Villa — Mallorca (7N)", amount: 25704, paidBy:"Abu Azzam", status:"paid", settled:true },
+    { icon:"🏨", name:"Sweett Artois Haussman — Paris (5N)", amount: 10368.86, paidBy:"Abu Azzam", status:"paid", settled:false },
+    // Car
+    { icon:"🚗", name:"Sixt BMW Convertible (Mallorca)", amount: 4458.83, paidBy:"Abu Azzam", status:"paid", settled:false },
+    // Beach clubs / nightlife (so far)
+    { icon:"🏖️", name:"Purobeach (Mallorca)", amount: 3214.83, paidBy:"Abu Azzam", status:"paid", settled:false },
+    { icon:"🏖️", name:"UM Beach (Mallorca)", amount: 4456.03, paidBy:"Abu Azzam", status:"paid", settled:false },
+    { icon:"🏖️", name:"Beso Beach (Mallorca)", amount: 5625.95, paidBy:"Abu Azzam", status:"paid", settled:false },
+    { icon:"🍽️", name:"Santanna (Mykonos)", amount: 1150, paidBy:"Abu Faisal", status:"paid", settled:false },
+    { icon:"🎵", name:"Cava Paradiso (Mykonos)", amount: 1800, paidBy:"Abu Faisal", status:"paid", settled:false },
+    { icon:"🎭", name:"Lio Mykonos", amount: 2250, paidBy:"Abu Faisal", status:"paid", settled:false },
+  ]
+};
+
+// ── STATE ──
+let currentCity = 'mykonos';
+
+// ── CURSOR (desktop only — disabled on touch devices) ──
+const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+if (isTouchDevice) {
+  // Hide custom cursor, restore normal touch behavior
+  if (cursor) cursor.style.display = 'none';
+  if (cursorRing) cursorRing.style.display = 'none';
+  document.body.style.cursor = 'auto';
+} else {
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+  function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursorRing.style.left = rx + 'px';
+    cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+}
+
+// ── HELPERS ──
+const sar = n => `SAR ${n.toLocaleString()}`;
+const eur = n => `€${Math.round(n/EUR).toLocaleString()}`;
+const both = n => `${sar(n)} <span style="color:var(--muted);font-size:0.75em">(${eur(n)})</span>`;
+const statusBadge = s => s === 'paid'
+  ? `<span class="pr-status paid">✓ Paid</span>`
+  : s === 'pending'
+  ? `<span class="pr-status pending">⏳ Pending</span>`
+  : `<span class="pr-status upcoming">◌ Not Yet</span>`;
+
+// ── TRIP DATES (city start dates) ──
+const tripDates = {
+  start:    new Date('2026-08-11T12:00:00+03:00'),
+  mykonos:  new Date('2026-08-11T16:00:00+03:00'),
+  mallorca: new Date('2026-08-15T16:15:00+02:00'),
+  paris:    new Date('2026-08-22T11:10:00+02:00'),
+  end:      new Date('2026-08-27T18:45:00+03:00'),
+};
+
+// ── COUNTDOWN ──
+function getCountdown(target) {
+  const diff = target - new Date();
+  if (diff <= 0) return null;
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+  return { d, h, m, s };
+}
+
+function renderCountdown(target, eyebrow, bgImage) {
+  const c = getCountdown(target);
+  const bgStyle = bgImage ? ` style="background-image:url('${bgImage}')"` : '';
+  const bgClass = bgImage ? ' has-bg' : '';
+  if (!c) return `
+    <div class="countdown-section${bgClass}"${bgStyle}>
+      <div class="countdown-eyebrow"><span class="countdown-pulse"></span>${eyebrow}</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:32px;position:relative;z-index:1">✈️ Already there!</div>
+    </div>`;
+  return `
+    <div class="countdown-section${bgClass}"${bgStyle}>
+      <div class="countdown-eyebrow"><span class="countdown-pulse"></span>${eyebrow}</div>
+      <div class="countdown-grid">
+        <div class="cd-cell"><span class="cd-num">${c.d}</span><span class="cd-label">Days</span></div>
+        <div class="cd-cell"><span class="cd-num">${String(c.h).padStart(2,'0')}</span><span class="cd-label">Hours</span></div>
+        <div class="cd-cell"><span class="cd-num">${String(c.m).padStart(2,'0')}</span><span class="cd-label">Minutes</span></div>
+        <div class="cd-cell"><span class="cd-num">${String(c.s).padStart(2,'0')}</span><span class="cd-label">Seconds</span></div>
+      </div>
+    </div>`;
+}
+
+// Countdown background images — vibrant young travel vibes
+const countdownBg = {
+  overview: 'https://images.unsplash.com/photo-1530870110042-98b2cb110834?w=1600&q=80&auto=format&fit=crop',
+  mykonos:  'https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=1600&q=80&auto=format&fit=crop',
+  mallorca: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1600&q=80&auto=format&fit=crop',
+  paris:    'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600&q=80&auto=format&fit=crop',
+};
+
+// ── CITY GEO + TIMEZONE DATA ──
+const cityGeo = [
+  { key:'riyadh',   name:'Riyadh',   flag:'🇸🇦', tz:'Asia/Riyadh',     lat:24.71, lon:46.68 },
+  { key:'mykonos',  name:'Mykonos',  flag:'🇬🇷', tz:'Europe/Athens',   lat:37.45, lon:25.33 },
+  { key:'mallorca', name:'Mallorca', flag:'🇪🇸', tz:'Europe/Madrid',   lat:39.57, lon:2.65 },
+  { key:'paris',    name:'Paris',    flag:'🇫🇷', tz:'Europe/Paris',    lat:48.86, lon:2.35 },
+];
+
+// ── WORLD CLOCKS ──
+// ── CITY CLOCKS (Riyadh + this city) ──
+function renderCityClocks(cityKey) {
+  const riyadh = cityGeo.find(c=>c.key==='riyadh');
+  const city = cityGeo.find(c=>c.key===cityKey);
+  if (!city) return '';
+  const pair = [city, riyadh];
+  return `
+    <div class="clocks-section">
+      <div class="section-mini-title">🕐 Current Local Times</div>
+      <div class="clocks-grid clocks-grid-pair">
+        ${pair.map(c => `
+          <div class="clock-card">
+            <div class="clock-flag">${c.flag}</div>
+            <div class="clock-analog">
+              <div class="clock-face">
+                <div class="clock-hand clock-hour" data-city="${c.key}" data-hand="hour"></div>
+                <div class="clock-hand clock-min" data-city="${c.key}" data-hand="min"></div>
+                <div class="clock-hand clock-sec" data-city="${c.key}" data-hand="sec"></div>
+                <div class="clock-center"></div>
+              </div>
+            </div>
+            <div class="clock-city">${c.name}</div>
+            <div class="clock-digital" id="digital-${c.key}">--:--</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function updateClocks() {
+  cityGeo.forEach(c => {
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: c.tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+    }).formatToParts(now);
+    const h = +parts.find(p=>p.type==='hour').value % 12;
+    const m = +parts.find(p=>p.type==='minute').value;
+    const s = +parts.find(p=>p.type==='second').value;
+    const digital = new Intl.DateTimeFormat('en-GB', { timeZone:c.tz, hour:'2-digit', minute:'2-digit', hour12:false }).format(now);
+
+    const hourDeg = (h * 30) + (m * 0.5);
+    const minDeg = m * 6;
+    const secDeg = s * 6;
+
+    document.querySelectorAll(`[data-city="${c.key}"][data-hand="hour"]`).forEach(el=>el.style.transform=`rotate(${hourDeg}deg)`);
+    document.querySelectorAll(`[data-city="${c.key}"][data-hand="min"]`).forEach(el=>el.style.transform=`rotate(${minDeg}deg)`);
+    document.querySelectorAll(`[data-city="${c.key}"][data-hand="sec"]`).forEach(el=>el.style.transform=`rotate(${secDeg}deg)`);
+
+    const dig = document.getElementById(`digital-${c.key}`);
+    if(dig) dig.textContent = digital;
+  });
+}
+
+// ── WEATHER (Current — Open-Meteo, no key) ──
+const weatherCodes = {
+  0:{i:'☀️',t:'Clear'},1:{i:'🌤️',t:'Mainly clear'},2:{i:'⛅',t:'Partly cloudy'},3:{i:'☁️',t:'Overcast'},
+  45:{i:'🌫️',t:'Foggy'},48:{i:'🌫️',t:'Foggy'},51:{i:'🌦️',t:'Light drizzle'},53:{i:'🌦️',t:'Drizzle'},55:{i:'🌧️',t:'Drizzle'},
+  61:{i:'🌧️',t:'Light rain'},63:{i:'🌧️',t:'Rain'},65:{i:'⛈️',t:'Heavy rain'},
+  71:{i:'🌨️',t:'Snow'},80:{i:'🌦️',t:'Showers'},81:{i:'🌧️',t:'Showers'},82:{i:'⛈️',t:'Heavy showers'},
+  95:{i:'⛈️',t:'Thunderstorm'},96:{i:'⛈️',t:'Thunderstorm'},99:{i:'⛈️',t:'Thunderstorm'}
+};
+
+// City weather: this city + Riyadh, with high/low
+function renderCityWeather(cityKey) {
+  const riyadh = cityGeo.find(c=>c.key==='riyadh');
+  const city = cityGeo.find(c=>c.key===cityKey);
+  if (!city) return '';
+  const pair = [city, riyadh];
+  return `
+    <div class="weather-section">
+      <div class="section-mini-title">🌤️ Current Weather <span style="opacity:0.6;font-weight:400;text-transform:none;letter-spacing:0">· live, updates near trip dates</span></div>
+      <div class="weather-grid weather-grid-pair">
+        ${pair.map(c => `
+          <div class="weather-card" id="weather-${c.key}">
+            <div class="wx-flag">${c.flag}</div>
+            <div class="wx-city">${c.name}</div>
+            <div class="wx-icon" id="wx-icon-${c.key}">⏳</div>
+            <div class="wx-temp" id="wx-temp-${c.key}">--°</div>
+            <div class="wx-desc" id="wx-desc-${c.key}">Loading...</div>
+            <div class="wx-hilo" id="wx-hilo-${c.key}"></div>
+            <div class="wx-sun" id="wx-sun-${c.key}"></div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+async function loadCityWeather(cityKey) {
+  const riyadh = cityGeo.find(c=>c.key==='riyadh');
+  const city = cityGeo.find(c=>c.key===cityKey);
+  if (!city) return;
+  const pair = [city, riyadh];
+  for (const c of pair) {
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=${encodeURIComponent(c.tz)}&forecast_days=1`;
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('weather fetch failed');
+      const d = await r.json();
+      const temp = Math.round(d.current.temperature_2m);
+      const code = d.current.weather_code;
+      const wc = weatherCodes[code] || {i:'🌡️',t:'—'};
+      const hi = Math.round(d.daily.temperature_2m_max[0]);
+      const lo = Math.round(d.daily.temperature_2m_min[0]);
+      const sunrise = d.daily.sunrise[0].split('T')[1];
+      const sunset = d.daily.sunset[0].split('T')[1];
+
+      const iconEl = document.getElementById(`wx-icon-${c.key}`);
+      const tempEl = document.getElementById(`wx-temp-${c.key}`);
+      const descEl = document.getElementById(`wx-desc-${c.key}`);
+      const hiloEl = document.getElementById(`wx-hilo-${c.key}`);
+      const sunEl  = document.getElementById(`wx-sun-${c.key}`);
+      if(iconEl) iconEl.textContent = wc.i;
+      if(tempEl) tempEl.textContent = `${temp}°C`;
+      if(descEl) descEl.textContent = wc.t;
+      if(hiloEl) hiloEl.innerHTML = `<span class="wx-hi">▲ ${hi}°</span> &nbsp; <span class="wx-lo">▼ ${lo}°</span>`;
+      if(sunEl)  sunEl.innerHTML = `🌅 ${sunrise} &nbsp;·&nbsp; 🌇 ${sunset}`;
+    } catch(e) {
+      const descEl = document.getElementById(`wx-desc-${c.key}`);
+      const iconEl = document.getElementById(`wx-icon-${c.key}`);
+      if(iconEl) iconEl.textContent = '🌡️';
+      if(descEl) descEl.textContent = 'Unavailable';
+    }
+  }
+}
+
+// ── EXCHANGE RATE WIDGET ──
+let cachedRate = null;
+async function fetchExchangeRate() {
+  try {
+    // Try Frankfurter API first
+    const r = await fetch('https://api.frankfurter.dev/v1/latest?from=EUR&to=SAR');
+    if (r.ok) {
+      const d = await r.json();
+      if (d.rates && d.rates.SAR) {
+        cachedRate = d.rates.SAR;
+        return cachedRate;
+      }
+    }
+  } catch(e) {}
+  // Fallback: Fawaz Ahmed API
+  try {
+    const r = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json');
+    if (r.ok) {
+      const d = await r.json();
+      if (d.eur && d.eur.sar) {
+        cachedRate = d.eur.sar;
+        return cachedRate;
+      }
+    }
+  } catch(e) {}
+  return null;
+}
+
+function renderExchangeRateSection() {
+  return `
+    <div class="fx-section" id="fxSection">
+      <div class="fx-header">
+        <div class="fx-title">💱 Live Exchange Rate</div>
+        <div class="fx-meta">
+          <span class="fx-live-dot"></span>
+          <span id="fxUpdated">Loading...</span>
+        </div>
+      </div>
+      <div class="fx-hero">
+        <div class="fx-pair">1 EUR equals</div>
+        <div class="fx-rate-big">
+          <span id="fxMidRate">...</span>
+          <span class="fx-suffix">SAR</span>
+        </div>
+      </div>
+      <div class="fx-converter">
+        <div>
+          <div class="fx-currency-label">€ Euro (EUR)</div>
+          <input class="fx-input" id="fxEurInput" type="number" value="100" min="0" step="1">
+        </div>
+        <div class="fx-arrow" id="fxFlip">⇄</div>
+        <div>
+          <div class="fx-currency-label">﷼ Saudi Riyal (SAR)</div>
+          <input class="fx-input" id="fxSarInput" type="number" value="..." min="0" step="1">
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px;text-align:center">Rates from Saudi Banks (Estimated)</div>
+      <div class="fx-banks" id="fxBanks">
+        <div class="fx-bank-row"><div class="fx-bank-name">Al Rajhi</div><div class="fx-bank-rate">...</div><div class="fx-bank-spread">+1.8% spread</div></div>
+        <div class="fx-bank-row"><div class="fx-bank-name">Barq (STC Pay)</div><div class="fx-bank-rate">...</div><div class="fx-bank-spread">+1.5% spread</div></div>
+        <div class="fx-bank-row"><div class="fx-bank-name">D360</div><div class="fx-bank-rate">...</div><div class="fx-bank-spread">+1.2% spread</div></div>
+        <div class="fx-bank-row"><div class="fx-bank-name">SNB / Alahli</div><div class="fx-bank-rate">...</div><div class="fx-bank-spread">+2.0% spread</div></div>
+      </div>
+      <div class="fx-disclaimer">⚠ Bank rates are estimates including typical retail spreads. Mid-market rate updated from European Central Bank daily. Actual rates may vary.</div>
+    </div>`;
+}
+
+async function activateExchangeWidget() {
+  const fx = document.getElementById('fxSection');
+  if (!fx) return;
+  const rate = await fetchExchangeRate();
+  if (!rate) {
+    document.getElementById('fxUpdated').textContent = 'Offline · using fallback';
+    document.getElementById('fxMidRate').textContent = '4.50';
+    return;
+  }
+  const mid = rate;
+  document.getElementById('fxMidRate').textContent = mid.toFixed(4);
+  document.getElementById('fxUpdated').textContent = `Live · ${new Date().toLocaleDateString()}`;
+
+  // Bank rates with realistic spreads
+  const banks = document.querySelectorAll('#fxBanks .fx-bank-rate');
+  const spreads = [0.018, 0.015, 0.012, 0.020]; // Al Rajhi, Barq, D360, SNB
+  banks.forEach((el, i) => {
+    el.textContent = (mid * (1 + spreads[i])).toFixed(4);
+  });
+
+  // Converter
+  const eurInput = document.getElementById('fxEurInput');
+  const sarInput = document.getElementById('fxSarInput');
+  let direction = 'eur-to-sar';
+  function recalc() {
+    if (direction === 'eur-to-sar') {
+      sarInput.value = (parseFloat(eurInput.value || 0) * mid).toFixed(2);
+    } else {
+      eurInput.value = (parseFloat(sarInput.value || 0) / mid).toFixed(2);
+    }
+  }
+  recalc();
+  eurInput.addEventListener('input', () => { direction = 'eur-to-sar'; recalc(); });
+  sarInput.addEventListener('input', () => { direction = 'sar-to-eur'; recalc(); });
+  document.getElementById('fxFlip').addEventListener('click', () => {
+    const tmp = eurInput.value;
+    eurInput.value = sarInput.value;
+    sarInput.value = tmp;
+    direction = direction === 'eur-to-sar' ? 'sar-to-eur' : 'eur-to-sar';
+    recalc();
+  });
+}
+
+
+
+// ── TIMELINE ──
+function renderTimeline(filterCity) {
+  const today = new Date();
+  const days = filterCity ? tripTimeline.filter(d => d.city.toLowerCase().includes(filterCity)) : tripTimeline;
+
+  return `
+    <div class="timeline-section">
+      <div class="timeline-header">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--c1)">📅 Daily Timeline ${filterCity ? '— '+filterCity : '— Full Trip'}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">17 days · scroll →</div>
+      </div>
+      <div class="timeline-scroll">
+        ${days.map(d => {
+          const date = new Date(`2026-08-${String(11 + d.day - 1).padStart(2,'0')}T00:00:00`);
+          const isPast   = date < today && date.toDateString() !== today.toDateString();
+          const isToday  = date.toDateString() === today.toDateString();
+          const cls = isToday ? 'today' : isPast ? 'past' : '';
+          return `
+            <div class="day-card ${cls}">
+              ${isToday ? '<div class="dc-badge">Today</div>' : ''}
+              <div class="dc-num">Day ${d.day} / 17</div>
+              <div class="dc-date">${d.date}</div>
+              <span class="dc-flag">${d.flag}</span>
+              <div class="dc-city">${d.city}</div>
+              <div class="dc-event">${d.event}</div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+// ── ACTIVITIES ──
+function renderActivities(c) {
+  if (!c.activities) return '';
+
+  const statusInfo = {
+    'paid':          { label:'Reserved & Paid', cls:'paid' },
+    'reserved-free': { label:'Reserved & Paid', cls:'reserved-free' },
+    'reserved-nopay':{ label:'Reserved (no pay)', cls:'reserved-nopay' },
+    'pending':       { label:'Pending', cls:'pending' },
+    'idea':          { label:'Idea', cls:'idea' },
+    'info':          { label:'Travel', cls:'info' },
+  };
+
+  const legend = `
+    <div class="activities-legend">
+      <div class="legend-item"><span class="legend-dot paid"></span><span><span class="legend-label">Reserved & Paid</span> — booked and fully paid in advance</span></div>
+      <div class="legend-item"><span class="legend-dot reserved-nopay"></span><span><span class="legend-label">Reserved (no payment)</span> — booked/confirmed but not paid yet</span></div>
+      <div class="legend-item"><span class="legend-dot pending"></span><span><span class="legend-label">Pending</span> — not confirmed yet, still being arranged</span></div>
+      <div class="legend-item"><span class="legend-dot idea"></span><span><span class="legend-label">Idea</span> — suggested option, not booked</span></div>
+    </div>`;
+
+  const days = c.activities.map((d, dayIdx) => `
+    <div class="activity-day">
+      <div class="activity-day-header">
+        <span class="adh-day">${d.day}</span>
+        <span class="adh-date">${d.date}</span>
+      </div>
+      <div class="activity-items">
+        ${d.items.map((it, itemIdx) => {
+          const si = statusInfo[it.status] || statusInfo['idea'];
+          const priceHtml = it.price
+            ? `<div class="act-price">€${it.price.toLocaleString()}</div>`
+            : `<div class="act-price-empty">—</div>`;
+          // Travel info rows (Arrival / Departure)
+          if (it.status === 'info') {
+            const isDeparture = it.type === 'Departure';
+            const nextCity = c.nextCity;
+            const clickAttr = (isDeparture && nextCity)
+              ? ` onclick="switchCity('${nextCity}')" style="grid-template-columns:70px 1fr auto;cursor:none"`
+              : ` style="grid-template-columns:70px 1fr auto"`;
+            const arrow = (isDeparture && nextCity) ? ' →' : '';
+            return `
+              <div class="activity-row${(isDeparture && nextCity) ? ' act-clickable' : ''}"${clickAttr}>
+                <div class="act-time">${it.time}</div>
+                <div class="act-main">
+                  <span class="act-icon">${it.icon}</span>
+                  <div>
+                    <div class="act-name">${it.name}${arrow}</div>
+                    <div class="act-type">${it.type}${(isDeparture && nextCity) ? ' · Tap to view next city' : ''}</div>
+                    ${it.note ? `<div class="act-note">${it.note}</div>` : ''}
+                  </div>
+                </div>
+                <div class="act-status info">${it.type}</div>
+              </div>`;
+          }
+          // Dress code lookup
+          const dc = dressCodes[it.name];
+          const dcId = `dc-${c.name.replace(/\s/g,'')}-${dayIdx}-${itemIdx}`;
+          const dcHtml = dc ? `
+            <div class="act-dc-toggle" onclick="(function(el){var b=document.getElementById('${dcId}');b.classList.toggle('open');el.classList.toggle('open');})(this)">👔 Dress Code <span class="dc-arrow">▾</span></div>
+            <div class="act-dc-body" id="${dcId}">
+              <div class="act-dc-content">
+                <div class="act-dc-main">${dc.code}</div>
+                <div class="act-dc-tags">
+                  ${dc.yes.map(t=>`<span class="dc-tag dc-yes">✓ ${t}</span>`).join('')}
+                  ${dc.no.map(t=>`<span class="dc-tag dc-no">✗ ${t}</span>`).join('')}
+                </div>
+                <div class="act-dc-note">${dc.note}</div>
+              </div>
+            </div>` : '';
+          return `
+            <div class="activity-item-wrap">
+              <div class="activity-row">
+                <div class="act-time">${it.time}</div>
+                <div class="act-main">
+                  <span class="act-icon">${it.icon}</span>
+                  <div>
+                    <div class="act-name">${it.maps ? `<a href="${it.maps}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted var(--c2)">${it.name}</a>` : it.name}</div>
+                    <div class="act-type">${it.type}</div>
+                    ${(it.dist || it.drive) ? `<div class="act-meta">📍 ${it.dist || ''}${it.dist && it.drive ? ' · ' : ''}${it.drive ? '🚗 '+it.drive : ''}${it.maps ? ` · <a href="${it.maps}" target="_blank" class="act-maps-link">Open in Maps ↗</a>` : ''}</div>` : ''}
+                    ${it.note ? `<div class="act-note">${it.note}</div>` : ''}
+                    ${dcHtml}
+                  </div>
+                </div>
+                ${priceHtml}
+                <div class="act-status ${si.cls}">${si.label}</div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+
+  // Totals
+  const paidTotal = c.activities.flatMap(d=>d.items).filter(i=>i.status==='paid').reduce((s,i)=>s+(i.price||0),0);
+  const reservedTotal = c.activities.flatMap(d=>d.items).filter(i=>i.status==='reserved-nopay').reduce((s,i)=>s+(i.price||0),0);
+
+  return `
+    <div class="activities-section">
+      <div class="activities-header">
+        <div class="activities-title">🎉 Activities & Bookings — ${c.name}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">
+          €${paidTotal.toLocaleString()} paid${reservedTotal>0?` · €${reservedTotal.toLocaleString()} reserved (unpaid)`:''}
+        </div>
+      </div>
+      ${legend}
+      ${days}
+    </div>`;
+}
+
+// ── QUICK LINKS ──
+function renderQuickLinks(c) {
+  if (!c.quickLinks) return '';
+  return `
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--c1);margin-bottom:16px">🔗 Quick Links</div>
+    <div class="quick-links-section">
+      ${c.quickLinks.map(q => `
+        <a href="${q.url}" target="_blank" class="quick-link">
+          <div class="ql-icon">${q.icon}</div>
+          <div class="ql-text">
+            <div class="ql-title">${q.title}</div>
+            <div class="ql-sub">${q.sub}</div>
+          </div>
+          <div class="ql-arrow">↗</div>
+        </a>`).join('')}
+    </div>`;
+}
+
+// ── FLIGHT CARD ──
+function flightCard(f, label) {
+  // Parse "City (XXX)" or "City XXX" → { code, city }
+  function parseEndpoint(s) {
+    if (!s) return { code: '', city: '' };
+    let m = s.match(/^(.*?)\s*\(([A-Z]{3})\)\s*$/);
+    if (m) return { city: m[1].trim(), code: m[2] };
+    m = s.match(/^(.*?)\s+([A-Z]{3})\s*$/);
+    if (m) return { city: m[1].trim(), code: m[2] };
+    return { city: s.trim(), code: s.trim().slice(0,3).toUpperCase() };
+  }
+  const a = parseEndpoint(f.dep);
+  const b = parseEndpoint(f.arr);
+
+  // T6: known departure/arrival datetimes per flight (for live status + countdown).
+  // No external API — computed from the trip schedule.
+  const FLIGHT_TIMES = {
+    SV199:  { dep:'2026-08-11T12:00:00+03:00', arr:'2026-08-11T16:00:00+03:00' },
+    EW2661: { dep:'2026-08-15T10:15:00+03:00', arr:'2026-08-15T12:05:00+02:00' },
+    EW2586: { dep:'2026-08-15T14:15:00+02:00', arr:'2026-08-15T16:15:00+02:00' },
+    IB5671: { dep:'2026-08-22T09:05:00+02:00', arr:'2026-08-22T11:10:00+02:00' },
+    SV144:  { dep:'2026-08-27T11:30:00+02:00', arr:'2026-08-27T18:45:00+03:00' },
+  };
+  const ft = FLIGHT_TIMES[f.flight];
+  let statusBadgeHtml = '';
+  let countdownHtml = '';
+  if (ft) {
+    const now = new Date();
+    const dep = new Date(ft.dep);
+    const arr = new Date(ft.arr);
+    let color, icon, txt;
+    if (now < dep) {
+      // Upcoming — show live countdown
+      const diff = dep - now;
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff / 3600000) % 24);
+      const m = Math.floor((diff / 60000) % 60);
+      color = 'var(--c1)'; icon = '🔜'; txt = 'Upcoming';
+      const parts = [];
+      if (d > 0) parts.push(d + 'd');
+      parts.push(h + 'h');
+      if (d === 0) parts.push(m + 'm');
+      countdownHtml = `<span class="bp-flight-cd" data-dep="${ft.dep}">Departs in ${parts.join(' ')}</span>`;
+    } else if (now >= dep && now < arr) {
+      color = '#16a34a'; icon = '✈️'; txt = 'In the air';
+    } else {
+      color = 'var(--muted)'; icon = '✅'; txt = 'Landed';
+    }
+    statusBadgeHtml = `<span class="bp-status" style="color:${color};border-color:${color}">${icon} ${txt}</span>`;
+  }
+
+  const transitHtml = f.transit ? `
+    <div style="margin:0 16px 14px;padding:8px 12px;background:var(--border);border-radius:6px;font-size:11px;">
+      <span style="color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;">Transit · ${f.transit.from || ''}</span><br>
+      ${f.transit.layover ? `Layover: <strong>${f.transit.layover}</strong> · Next: ${f.transit.nextFlight} dep ${f.transit.nextDep} → arr ${f.transit.nextArr}` : f.transit.note || ''}
+    </div>` : '';
+
+  const btns = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${f.radar ? `<a href="${f.radar}" target="_blank" class="bp-btn"><span>✈️</span> Track ${f.flight} live</a>` : ''}
+      ${f.airportMaps ? `<a href="${f.airportMaps}" target="_blank" class="bp-btn"><span>📍</span> ${f.airportName || 'Airport'}</a>` : ''}
+    </div>`;
+
+  // Barcode: deterministic bar pattern from the flight number
+  let seed = 0; for (const ch of (f.flight||'XX')) seed += ch.charCodeAt(0);
+  let bars = '';
+  for (let i = 0; i < 26; i++) {
+    seed = (seed * 9301 + 49297) % 233280;
+    const w = 2 + (seed % 5);
+    const h = 60 + (seed % 41);
+    bars += `<div style="width:${w}px;height:${h}%;background:var(--ink);opacity:0.85"></div>`;
+  }
+
+  return `
+    <div class="boarding-pass">
+      <div class="bp-header">
+        <div style="display:flex;align-items:center;gap:7px;color:var(--c1)">
+          <span style="font-size:15px">🛫</span>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink)">Boarding Pass</span>
+        </div>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">${label} · ${f.date}</span>
+      </div>
+
+      ${statusBadgeHtml || countdownHtml ? `<div class="bp-livebar">${statusBadgeHtml}${countdownHtml}</div>` : ''}
+
+      <div class="bp-route">
+        <div class="bp-endpoint">
+          <div class="bp-code">${a.code}</div>
+          <div class="bp-city">${a.city}</div>
+          <div class="bp-time">${f.depTime}</div>
+        </div>
+        <div class="bp-path">
+          <span class="bp-line"></span>
+          <span class="bp-plane">✈</span>
+          <span class="bp-line"></span>
+        </div>
+        <div class="bp-endpoint" style="text-align:right">
+          <div class="bp-code">${b.code}</div>
+          <div class="bp-city">${b.city}</div>
+          <div class="bp-time">${f.arrTime}</div>
+        </div>
+      </div>
+
+      <div class="bp-meta">
+        <div><div class="bp-meta-label">Airline</div><div class="bp-meta-val">${f.airline}</div></div>
+        <div><div class="bp-meta-label">Flight</div><div class="bp-meta-val">${f.flight}</div></div>
+        <div><div class="bp-meta-label">Date</div><div class="bp-meta-val">${f.date}</div></div>
+      </div>
+
+      ${transitHtml}
+
+      <div class="bp-stub">
+        <div class="bp-barcode">${bars}</div>
+        ${btns}
+      </div>
+    </div>`;
+}
+
+// ── EXPENSE TRACKER (Cloud-synced via Supabase) ──
+const SUPABASE_URL = 'https://nlmixmirkklkckgjqwgf.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sbWl4bWlya2tsa2NrZ2pxd2dmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxODEyMDcsImV4cCI6MjA5NTc1NzIwN30.0C09DEh2XRc1-YiXCTx4Ti_9f6EezCFNtxeqS7uB2hk';
+const SB_HEADERS = {
+  'apikey': SUPABASE_ANON,
+  'Authorization': `Bearer ${SUPABASE_ANON}`,
+  'Content-Type': 'application/json',
+};
+
+const RATE_KEY = 'voyage_exp_rate_v1';
+const RATE_MODE_KEY = 'voyage_exp_rate_mode_v1';
+
+// In-memory cache of expenses (synced from cloud)
+let expensesCache = [];
+
+const expCategories = [
+  { v:'food', icon:'🍽️', label:'Food & Dining' },
+  { v:'shopping', icon:'🛍️', label:'Shopping' },
+  { v:'transport', icon:'🚕', label:'Transport' },
+  { v:'activities', icon:'🎉', label:'Activities' },
+  { v:'nightlife', icon:'🍷', label:'Nightlife' },
+  { v:'beach', icon:'🏖️', label:'Beach Club' },
+  { v:'misc', icon:'💡', label:'Misc' },
+];
+const expCityOptions = [
+  { v:'mykonos', label:'🇬🇷 Mykonos' },
+  { v:'mallorca', label:'🇪🇸 Mallorca' },
+  { v:'paris', label:'🇫🇷 Paris' },
+  { v:'general', label:'🌍 General' },
+];
+const expPayers = ['Abu Azzam','Abu Saud','Abu Faisal','Abu Mosaed'];
+
+// ── SMART AUTO-CLASSIFIER (for Barq / merchant names) ──
+const merchantKeywords = {
+  transport: ['UBER','UBR','BOLT','TAXI','CAB','LYFT','CABIFY','FREENOW','RIDE','TRANSPORT','METRO','TRAIN','RAIL','SNCF','RENFE','FLIX','BUS','PARKING','PARK','FUEL','PETROL','SHELL','TOLL','CARRIS','TRANSPORTE'],
+  beach: ['BEACH','BESO','NIKKI','PUROBEACH','PURO','NAMMOS','SCORPIOS','PRINCIPOTE','BAGATELLE','BLUE MARLIN','NU BEACH','UM BEACH','SANTANNA','SANTANA'],
+  nightlife: ['CLUB','LIO','LÍO','CAVO','CAVA','PARADISO','LOUNGE','PUB','NIGHT','DISCO','INTERNI','QUEEN','TABOO','PACHA','USHUAIA','COCKTAIL','SHOT','TABANA','SEA CLUB'],
+  food: ['RESTAURANT','RESTAURANTE','CAFE','COFFEE','STARBUCKS','MCDONALD','BURGER','PIZZA','SUSHI','AMAZONICO','MAISON','NOBU','ZUMA','DINING','KITCHEN','GRILL','BISTRO','BRASSERIE','TRATTORIA','FOOD','DELI','BAKERY','NANDOS','KFC','STEAK','SEAFOOD','RIBS','TACOS','SUSHISAMBA','DISHOOM','SUMOSAN','NUSR','GYMKHANA','CHILTERN','SEXY FISH','HAKKASAN','COYA','SCOTTS','CIPRIANI','ILLETA','SCALINI','NOVIKOV'],
+  shopping: ['STORE','SHOP','MALL','ZARA','H&M','NIKE','ADIDAS','GUCCI','PRADA','LOUIS','VUITTON','CHANEL','DIOR','HARRODS','SELFRIDGES','HARVEY','BOUTIQUE','FASHION','SEPHORA','PHARMACY','PHARMACIE','FARMACIA','MARKET','MERCADONA','CARREFOUR','TESCO','SAINSBURY','WAITROSE','LIDL','ALDI','SPAR','ZARA'],
+};
+function classifyMerchant(name) {
+  if (!name) return 'misc';
+  const p = name.toUpperCase();
+  for (const [cat, kws] of Object.entries(merchantKeywords)) {
+    for (const kw of kws) {
+      if (p.includes(kw)) return cat;
+    }
+  }
+  return 'misc';
+}
+
+// Fetch all expenses from Supabase
+async function fetchExpensesFromCloud() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/expenses?select=*&order=created_at.desc`, {
+      headers: SB_HEADERS,
+    });
+    if (!r.ok) throw new Error('fetch failed: ' + r.status);
+    const data = await r.json();
+    expensesCache = data.map(e => {
+      let cat = e.category;
+      // Auto-classify if category is 'auto' (from Barq shortcut) — use description (merchant name)
+      if (cat === 'auto' || !cat) {
+        cat = classifyMerchant(e.description);
+      }
+      return {
+        id: e.id,
+        desc: e.description,
+        amount: parseFloat(e.amount),
+        currency: e.currency,
+        cat: cat,
+        city: e.city,
+        payer: e.payer,
+        rate: parseFloat(e.rate),
+        source: e.source || 'manual',
+        ts: e.created_at,
+      };
+    });
+    return expensesCache;
+  } catch(e) {
+    console.error('Could not load expenses from cloud:', e);
+    return expensesCache; // fall back to last known
+  }
+}
+
+function getExpenses() {
+  return expensesCache;
+}
+function getExpRate() {
+  const r = parseFloat(localStorage.getItem(RATE_KEY));
+  return (r && r > 0) ? r : 4.5;
+}
+function getExpRateMode() {
+  return localStorage.getItem(RATE_MODE_KEY) || 'fixed';
+}
+
+// Convert any expense to SAR
+function expToSAR(exp) {
+  return exp.currency === 'SAR' ? exp.amount : exp.amount * exp.rate;
+}
+
+function renderExpenseTracker() {
+  const rate = getExpRate();
+  const mode = getExpRateMode();
+  return `
+    <div class="expense-section">
+      <div class="expense-header">
+        <div class="expense-title">💸 Live Expense Tracker</div>
+        <div class="rate-control">
+          <span>Exchange Rate:</span>
+          <div class="rate-toggle">
+            <button id="rateModeFixed" class="${mode==='fixed'?'active':''}" onclick="setExpRateMode('fixed')">Fixed</button>
+            <button id="rateModeManual" class="${mode==='manual'?'active':''}" onclick="setExpRateMode('manual')">Manual</button>
+          </div>
+          <input class="rate-input" id="expRateInput" type="number" step="0.01" value="${rate}" onchange="setExpRate(this.value)" title="1 EUR = ? SAR">
+          <span>SAR/€</span>
+        </div>
+      </div>
+
+      <div class="expense-form">
+        <div class="ef-field">
+          <span class="ef-label">Description</span>
+          <input class="ef-input" id="expDesc" placeholder="e.g. Lunch at...">
+        </div>
+        <div class="ef-field">
+          <span class="ef-label">Amount</span>
+          <input class="ef-input" id="expAmount" type="number" step="0.01" placeholder="0.00">
+        </div>
+        <div class="ef-field">
+          <span class="ef-label">Currency</span>
+          <select class="ef-select" id="expCurrency">
+            <option value="EUR">€ EUR</option>
+            <option value="SAR">﷼ SAR</option>
+          </select>
+        </div>
+        <div class="ef-field">
+          <span class="ef-label">Category</span>
+          <select class="ef-select" id="expCat">
+            ${expCategories.map(c=>`<option value="${c.v}">${c.icon} ${c.label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="ef-field">
+          <span class="ef-label">City</span>
+          <select class="ef-select" id="expCity">
+            ${expCityOptions.map(c=>`<option value="${c.v}">${c.label}</option>`).join('')}
+          </select>
+        </div>
+        <button class="ef-add-btn" onclick="addExpense()">+ Add</button>
+      </div>
+      <div class="ef-field" style="margin-bottom:18px;max-width:200px">
+        <span class="ef-label">Paid By</span>
+        <select class="ef-select" id="expPayer">
+          ${expPayers.map(p=>`<option value="${p}">${p}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="expense-list" id="expenseList"></div>
+
+      <div class="expense-summary-bar">
+        <div class="esb-box">
+          <div class="esb-label">Logged Expenses</div>
+          <div class="esb-val" id="esbCount">0</div>
+        </div>
+        <div class="esb-box">
+          <div class="esb-label">Total Logged</div>
+          <div class="esb-val" id="esbTotal">SAR 0</div>
+        </div>
+        <div class="esb-box">
+          <div class="esb-label">Remaining Daily Avg</div>
+          <div class="esb-val" id="esbDaily">—</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function setExpRateMode(mode) {
+  localStorage.setItem(RATE_MODE_KEY, mode);
+  document.getElementById('rateModeFixed').classList.toggle('active', mode==='fixed');
+  document.getElementById('rateModeManual').classList.toggle('active', mode==='manual');
+}
+function setExpRate(v) {
+  const r = parseFloat(v);
+  if (r && r > 0) localStorage.setItem(RATE_KEY, r);
+}
+
+async function addExpense() {
+  const descEl = document.getElementById('expDesc');
+  const amountEl = document.getElementById('expAmount');
+  const desc = descEl.value.trim();
+  const amount = parseFloat(amountEl.value);
+  const currency = document.getElementById('expCurrency').value;
+  const cat = document.getElementById('expCat').value;
+  const city = document.getElementById('expCity').value;
+  const payer = document.getElementById('expPayer').value;
+  if (!desc || !amount || amount <= 0) {
+    descEl.style.borderColor = !desc ? '#dc2626' : '';
+    amountEl.style.borderColor = (!amount||amount<=0) ? '#dc2626' : '';
+    return;
+  }
+  const rate = getExpRate();
+  const addBtn = document.querySelector('.ef-add-btn');
+  if (addBtn) { addBtn.textContent = '...'; addBtn.style.opacity = '0.6'; }
+
+  const payload = {
+    description: desc,
+    amount: amount,
+    currency: currency,
+    category: cat,
+    city: city,
+    payer: payer,
+    rate: currency === 'EUR' ? rate : 1,
+    source: 'manual',
+  };
+
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/expenses`, {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Prefer': 'return=minimal' },
+      body: JSON.stringify(payload),
+    });
+    if (!r.ok) throw new Error('insert failed: ' + r.status);
+    // Clear form
+    descEl.value = '';
+    amountEl.value = '';
+    descEl.style.borderColor = '';
+    amountEl.style.borderColor = '';
+    // Reload from cloud
+    await fetchExpensesFromCloud();
+    refreshExpenses();
+  } catch(e) {
+    console.error('Could not add expense:', e);
+    alert('Could not save expense. Check your connection and try again.');
+  } finally {
+    if (addBtn) { addBtn.textContent = '+ Add'; addBtn.style.opacity = '1'; }
+  }
+}
+
+async function deleteExpense(id) {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/expenses?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: SB_HEADERS,
+    });
+    if (!r.ok) throw new Error('delete failed: ' + r.status);
+    await fetchExpensesFromCloud();
+    refreshExpenses();
+  } catch(e) {
+    console.error('Could not delete expense:', e);
+    alert('Could not delete. Check your connection and try again.');
+  }
+}
+
+function refreshExpenses() {
+  const list = document.getElementById('expenseList');
+  if (!list) return;
+  const arr = getExpenses();
+  const catMap = Object.fromEntries(expCategories.map(c=>[c.v,c]));
+  const cityMap = Object.fromEntries(expCityOptions.map(c=>[c.v,c.label]));
+
+  if (arr.length === 0) {
+    list.innerHTML = `<div class="expense-empty">No expenses logged yet. Add your first one above! 💸</div>`;
+  } else {
+    list.innerHTML = arr.map(e => {
+      const c = catMap[e.cat] || {icon:'💡',label:'Misc'};
+      const sar = expToSAR(e);
+      const origDisplay = e.currency === 'EUR' ? `€${e.amount.toLocaleString()}` : `SAR ${e.amount.toLocaleString()}`;
+      const rateNote = e.currency === 'EUR' ? ` @ ${e.rate}` : '';
+      const epc = memberColor(e.payer);
+      const payerSpan = epc ? `<span style="color:${epc}">● ${e.payer}</span>` : (e.payer || '');
+      return `
+        <div class="expense-row">
+          <span class="exp-cat-icon">${c.icon}</span>
+          <div class="exp-info">
+            <div class="exp-desc-txt">${e.desc}</div>
+            <div class="exp-sub-txt">${c.label} · ${payerSpan}</div>
+          </div>
+          <span class="exp-city-badge">${(cityMap[e.city]||'').replace(/🇬🇷|🇪🇸|🇫🇷|🌍/g,'').trim()}</span>
+          <div>
+            <div class="exp-amount-display">${origDisplay}${rateNote}</div>
+            <div class="exp-amount-sar">= SAR ${Math.round(sar).toLocaleString()}</div>
+          </div>
+          <button class="exp-delete" onclick="deleteExpense(${e.id})" title="Delete">×</button>
+        </div>`;
+    }).join('');
+  }
+
+  // Update summary
+  const totalSAR = arr.reduce((s,e)=>s+expToSAR(e),0);
+  document.getElementById('esbCount').textContent = arr.length;
+  document.getElementById('esbTotal').textContent = `SAR ${Math.round(totalSAR).toLocaleString()}`;
+
+  // Update global figures (Net Remaining, daily avg, total spent)
+  updateGlobalWithExpenses(totalSAR);
+  // T7: refresh the spend analyzer with the new pace
+  updateSpendAnalyzer();
+}
+
+// Recompute overview figures including logged expenses
+function updateGlobalWithExpenses(loggedSAR) {
+  const newTotalSpent = overviewData.totalConfirmedPaid + loggedSAR;
+  const newNetRemaining = overviewData.totalBudget - newTotalSpent;
+  const newDailyTotal = Math.round(newNetRemaining / TRIP_DAYS);
+  const newDailyPP = Math.round(newDailyTotal / TRAVELERS);
+
+  // Expense summary daily
+  const esbDaily = document.getElementById('esbDaily');
+  if (esbDaily) esbDaily.textContent = `SAR ${newDailyPP.toLocaleString()}/day`;
+
+  // Update the main overview boxes if present
+  const elTotalSpent = document.getElementById('ovTotalSpent');
+  const elPerPerson = document.getElementById('ovPerPerson');
+  const elNetRemaining = document.getElementById('ovNetRemaining');
+  const elDailyGroup = document.getElementById('ovDailyGroup');
+  const elDailyPP = document.getElementById('ovDailyPP');
+  if (elTotalSpent) {
+    elTotalSpent.innerHTML = `SAR ${Math.round(newTotalSpent).toLocaleString()}`;
+    elTotalSpent.nextElementSibling.textContent = `€${Math.round(newTotalSpent/EUR).toLocaleString()} · ${Math.round(newTotalSpent/overviewData.totalBudget*100)}% of budget`;
+  }
+  if (elPerPerson) {
+    elPerPerson.innerHTML = `SAR ${Math.round(newTotalSpent/TRAVELERS).toLocaleString()}`;
+  }
+  if (elNetRemaining) {
+    elNetRemaining.innerHTML = `SAR ${Math.round(newNetRemaining).toLocaleString()}`;
+    elNetRemaining.nextElementSibling.textContent = `€${Math.round(newNetRemaining/EUR).toLocaleString()} · for food, activities & daily spend`;
+  }
+  if (elDailyGroup) {
+    elDailyGroup.innerHTML = `SAR ${newDailyTotal.toLocaleString()}`;
+    elDailyGroup.nextElementSibling.textContent = `€${Math.round(newDailyTotal/EUR).toLocaleString()} / day for ${TRIP_DAYS} days`;
+  }
+  if (elDailyPP) {
+    elDailyPP.innerHTML = `SAR ${newDailyPP.toLocaleString()}`;
+    elDailyPP.nextElementSibling.textContent = `€${Math.round(newDailyPP/EUR).toLocaleString()} / day each`;
+  }
+}
+
+// ── RENDER OVERVIEW ──
+function renderOverview() {
+  const d = overviewData;
+  const paidPct = Math.round(d.totalConfirmedPaid / d.totalBudget * 100);
+  const maxPct  = Math.round(d.grandTotal / d.budgetMax * 100);
+
+  return `<div class="overview-panel">
+    ${renderCountdown(tripDates.start, 'Trip Begins In', countdownBg.overview)}
+
+    <div class="city-hero" style="border-bottom:none;padding-bottom:0;margin-bottom:32px">
+      <div>
+        <div class="city-eyebrow">Trip Summary — 4 Members</div>
+        <div class="city-name-big" style="font-size:clamp(40px,6vw,72px)">Summer Trip 2026</div>
+        <div class="city-tagline">Mykonos · Mallorca · Paris — 11 Aug to 27 Aug 2026 · 17 Days</div>
+      </div>
+      <div class="city-hero-right">
+        <div class="city-dates">Total Budget</div>
+        <div class="city-total-cost"><span style="font-size:22px;opacity:0.5">SAR </span>${d.totalBudget.toLocaleString()}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace">(€${Math.round(d.totalBudget/EUR).toLocaleString()} · 40,000 per person)</div>
+      </div>
+    </div>
+
+    <!-- CITY CARDS -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:12px">City Breakdown <span style="flex:1;height:1px;background:var(--border);display:inline-block"></span></div>
+    <div class="overview-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:32px">
+      ${Object.entries(cities).map(([key,c]) => {
+        const paid = c.costs.filter(x=>x.status==='paid').reduce((s,x)=>s+x.amount,0);
+        const pend = c.costs.filter(x=>x.status==='pending').reduce((s,x)=>s+x.amount,0);
+        return `<div class="overview-city-card" onclick="switchCity('${key}')">
+          <div class="occ-flag">${c.flag}</div>
+          <div class="occ-name">${c.name}</div>
+          <div class="occ-nights">${c.nights} nights · ${c.travelers} travelers · ${c.dates}</div>
+          <div class="occ-cost" style="margin-top:8px;font-size:13px">Paid: <strong>SAR ${paid.toLocaleString()}</strong></div>
+          ${pend>0?`<div class="occ-dates">+ SAR ${pend.toLocaleString()} pending</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- TOTALS -->
+    <div class="overview-totals" style="margin-bottom:2px">
+      <div class="ot-box">
+        <div class="ot-label">Total Spent So Far</div>
+        <div class="ot-val" id="ovTotalSpent" style="font-size:36px">${sar(d.totalConfirmedPaid)}</div>
+        <div class="ot-sub">${eur(d.totalConfirmedPaid)} · ${paidPct}% of budget</div>
+      </div>
+      <div class="ot-box">
+        <div class="ot-label">Per Person Spent</div>
+        <div class="ot-val" id="ovPerPerson" style="font-size:36px">${sar(Math.round(d.grandTotal/TRAVELERS))}</div>
+        <div class="ot-sub">${eur(Math.round(d.grandTotal/TRAVELERS))} · ${Math.round((d.grandTotal/TRAVELERS) / (160000/TRAVELERS) * 100)}% of 40k</div>
+      </div>
+      <div class="ot-box">
+        <div class="ot-label">Pending</div>
+        <div class="ot-val" style="font-size:36px;color:#15803d">${d.totalPending === 0 ? '✓ All Paid' : sar(d.totalPending)}</div>
+        <div class="ot-sub">${d.totalPending === 0 ? 'Hotels, Car & Bookings settled' : 'Outstanding bookings'}</div>
+      </div>
+    </div>
+    <div class="overview-totals" style="margin-bottom:32px">
+      <div class="ot-box">
+        <div class="ot-label">Net Remaining (from 160k)</div>
+        <div class="ot-val" id="ovNetRemaining" style="font-size:36px;color:#16a34a">${sar(d.netRemaining)}</div>
+        <div class="ot-sub">${eur(d.netRemaining)} · for food, activities & daily spend</div>
+      </div>
+      <div class="ot-box">
+        <div class="ot-label">Daily Allowance — Group</div>
+        <div class="ot-val" id="ovDailyGroup" style="font-size:36px">${sar(d.dailyAllowanceTotal)}</div>
+        <div class="ot-sub">${eur(d.dailyAllowanceTotal)} / day for 17 days</div>
+      </div>
+      <div class="ot-box">
+        <div class="ot-label">Daily Allowance — Per Person</div>
+        <div class="ot-val" id="ovDailyPP" style="font-size:36px">${sar(d.dailyAllowancePP)}</div>
+        <div class="ot-sub">${eur(d.dailyAllowancePP)} / day each</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-section" style="margin-bottom:32px">
+      <div class="progress-header">
+        <span class="ph-label">Budget Utilization (Confirmed Paid vs 160k Budget)</span>
+        <span class="ph-pct">${paidPct}% paid</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${paidPct}%"></div>
+      </div>
+      <div class="progress-labels">
+        <span class="pl-paid">Confirmed: SAR ${d.totalConfirmedPaid.toLocaleString()}</span>
+        <span class="pl-remaining">If 50k/person budget (SAR 200k): ${Math.round(d.grandTotal/200000*100)}% utilized</span>
+      </div>
+    </div>
+
+    ${renderExpenseTracker()}
+
+    ${renderSpendAnalyzer()}
+
+    ${renderExchangeRateSection()}
+  </div>`;
+}
+
+// ── SPEND ANALYZER (T7) ──
+// Pure analysis of your live spending pace vs. remaining budget. No external data.
+function computeSpendStats() {
+  const arr = (typeof getExpenses === 'function') ? getExpenses() : (expensesCache || []);
+  const liveSAR = arr.reduce((s,e)=> s + expToSAR(e), 0);
+  const netRemaining = overviewData.netRemaining - liveSAR;
+
+  const now = new Date();
+  const start = tripDates.start;
+  const end = tripDates.end;
+  const msDay = 86400000;
+  const totalDays = Math.max(1, Math.round((end - start) / msDay));
+
+  let phase, daysElapsed, daysLeft;
+  if (now < start) {
+    phase = 'before';
+    daysElapsed = 0;
+    daysLeft = totalDays;
+  } else if (now > end) {
+    phase = 'after';
+    daysElapsed = totalDays;
+    daysLeft = 0;
+  } else {
+    phase = 'during';
+    daysElapsed = Math.max(1, Math.ceil((now - start) / msDay));
+    daysLeft = Math.max(0, totalDays - daysElapsed);
+  }
+
+  const hasExpenses = arr.length > 0;
+  // Daily burn rate (only meaningful once the trip started and there are expenses)
+  const dailyRate = (phase === 'during' && hasExpenses) ? liveSAR / daysElapsed : 0;
+  // Planned safe daily budget for remaining days
+  const safeDaily = daysLeft > 0 ? netRemaining / daysLeft : 0;
+  // Projected total live spend by trip end at current rate
+  const projectedTotal = dailyRate * totalDays;
+  // Will the money last? days the remaining budget covers at current rate
+  const daysCovered = dailyRate > 0 ? netRemaining / dailyRate : Infinity;
+
+  return { liveSAR, netRemaining, phase, totalDays, daysElapsed, daysLeft,
+           hasExpenses, dailyRate, safeDaily, projectedTotal, daysCovered, count: arr.length };
+}
+
+function spendAnalyzerInner() {
+  const s = computeSpendStats();
+  const fmt = n => 'SAR ' + Math.round(n).toLocaleString();
+
+  // Before the trip, or no expenses yet → friendly placeholder
+  if (s.phase === 'before') {
+    return `<div class="sa-row"><span class="sa-ic">🧭</span>
+      <div><div class="sa-title">Ready when you are</div>
+      <div class="sa-sub">Your safe daily budget is <strong>${fmt(s.netRemaining / s.totalDays)}/day</strong> for the group across ${s.totalDays} days. Live tracking kicks in once the trip starts.</div></div></div>`;
+  }
+  if (!s.hasExpenses) {
+    return `<div class="sa-row"><span class="sa-ic">💸</span>
+      <div><div class="sa-title">No live expenses yet</div>
+      <div class="sa-sub">Add expenses in the tracker above and I'll project your spending pace and tell you if the budget will last.</div></div></div>`;
+  }
+
+  // Determine health: compare current daily rate to safe daily
+  let statusColor, statusIcon, statusText, advice;
+  if (s.phase === 'after') {
+    statusColor = 'var(--muted)'; statusIcon = '🏁';
+    statusText = 'Trip complete';
+    advice = `You spent ${fmt(s.liveSAR)} in live expenses. Net remaining: <strong>${fmt(s.netRemaining)}</strong>.`;
+  } else if (s.dailyRate <= s.safeDaily) {
+    statusColor = '#16a34a'; statusIcon = '✅';
+    statusText = 'On track';
+    advice = `At your current pace (<strong>${fmt(s.dailyRate)}/day</strong>) the budget comfortably lasts all ${s.daysLeft} remaining days. Safe daily: ${fmt(s.safeDaily)}.`;
+  } else {
+    statusColor = '#dc2626'; statusIcon = '⚠️';
+    statusText = 'Spending fast';
+    const overPct = Math.round((s.dailyRate / s.safeDaily - 1) * 100);
+    const runOut = isFinite(s.daysCovered) ? Math.floor(s.daysCovered) : null;
+    advice = `You're spending <strong>${overPct}% above</strong> the safe daily pace. At ${fmt(s.dailyRate)}/day, the remaining budget lasts about <strong>${runOut} more day${runOut===1?'':'s'}</strong> of ${s.daysLeft}. Consider trimming ~${fmt(s.dailyRate - s.safeDaily)}/day.`;
+  }
+
+  const bars = `
+    <div class="sa-metrics">
+      <div class="sa-metric"><div class="sa-m-label">Live spent</div><div class="sa-m-val">${fmt(s.liveSAR)}</div></div>
+      <div class="sa-metric"><div class="sa-m-label">Daily pace</div><div class="sa-m-val">${fmt(s.dailyRate)}</div></div>
+      <div class="sa-metric"><div class="sa-m-label">Safe / day</div><div class="sa-m-val">${fmt(s.safeDaily)}</div></div>
+      <div class="sa-metric"><div class="sa-m-label">Days left</div><div class="sa-m-val">${s.daysLeft}</div></div>
+    </div>`;
+
+  return `
+    <div class="sa-row" style="border-left:4px solid ${statusColor}">
+      <span class="sa-ic">${statusIcon}</span>
+      <div>
+        <div class="sa-title" style="color:${statusColor}">${statusText}</div>
+        <div class="sa-sub">${advice}</div>
+      </div>
+    </div>
+    ${bars}`;
+}
+
+function renderSpendAnalyzer() {
+  return `
+    <div class="expense-section sa-card">
+      <div class="expense-title" style="margin-bottom:18px">📊 Spend Analyzer</div>
+      <div id="spendAnalyzerBody">${spendAnalyzerInner()}</div>
+    </div>`;
+}
+
+function updateSpendAnalyzer() {
+  const body = document.getElementById('spendAnalyzerBody');
+  if (body) body.innerHTML = spendAnalyzerInner();
+}
+
+// ── TRIP STATS ──
+function renderStats() {
+  // Calculate stats
+  const allActivities = Object.values(cities).flatMap(c => c.activities ? c.activities.flatMap(d=>d.items) : []);
+  const beachClubs = allActivities.filter(a => a.type && a.type.includes('Beach')).length;
+  const nightlife = allActivities.filter(a => a.type === 'Nightlife').length;
+  const dining = allActivities.filter(a => a.type === 'Dining').length;
+  const shows = allActivities.filter(a => a.type === 'Show').length;
+  const totalActivities = allActivities.filter(a => a.status !== 'info').length;
+  const paidActivities = allActivities.filter(a => a.status === 'paid').length;
+
+  const totalNights = Object.values(cities).reduce((s,c)=>s+c.nights,0);
+  const activitiesEurPaid = Object.values(cities).flatMap(c=>c.activities?c.activities.flatMap(d=>d.items):[]).filter(i=>i.status==='paid').reduce((s,i)=>s+(i.price||0),0);
+
+  const stat = (icon, val, label, sub) => {
+    // If val is a clean integer (optionally with commas), animate it from 0.
+    const raw = String(val).replace(/,/g, '');
+    const isCountable = /^\d+$/.test(raw);
+    const valHtml = isCountable
+      ? `<div class="stat-tile-val" data-count="${raw}">0</div>`
+      : `<div class="stat-tile-val">${val}</div>`;
+    return `
+    <div class="stat-tile">
+      <div class="stat-tile-icon">${icon}</div>
+      ${valHtml}
+      <div class="stat-tile-label">${label}</div>
+      ${sub?`<div class="stat-tile-sub">${sub}</div>`:''}
+    </div>`;
+  };
+
+  return `<div class="stats-panel">
+    <div class="stats-hero-banner">
+      <div class="city-eyebrow">📊 By the Numbers</div>
+      <div class="city-name-big" style="font-size:clamp(40px,6vw,72px)">Trip Stats</div>
+      <div class="city-tagline">Everything about Summer Trip 2026, quantified</div>
+    </div>
+
+    <div class="stats-mega-grid">
+      ${stat('📅', totalNights, 'Total Nights', '17 days total')}
+      ${stat('🏙️', '3', 'Cities', 'Greece · Spain · France')}
+      ${stat('🌍', '3', 'Countries', '4 travelers')}
+      ${stat('✈️', '5', 'Flights', 'incl. 1 transit')}
+      ${stat('🛫', '11,097', 'Flight KM', 'round trip')}
+      ${stat('⏱️', '~13.9h', 'In the Air', 'total flight time')}
+      ${stat('🎉', totalActivities, 'Activities Planned', paidActivities+' paid in advance')}
+      ${stat('🏖️', beachClubs, 'Beach Clubs', 'sun & sea')}
+      ${stat('🍷', nightlife, 'Nightlife Spots', 'parties await')}
+      ${stat('🍽️', dining, 'Dining Experiences', 'gourmet stops')}
+      ${stat('🎭', shows, 'Shows', 'live entertainment')}
+      ${stat('🚗', '1', 'Rental Car', 'BMW Convertible')}
+    </div>
+
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin:20px 0 16px;display:flex;align-items:center;gap:12px">Spending Snapshot <span style="flex:1;height:1px;background:var(--border);display:inline-block"></span></div>
+    <div class="stats-mega-grid">
+      ${stat('💰', sar(overviewData.totalConfirmedPaid), 'Total Spent', eur(overviewData.totalConfirmedPaid))}
+      ${stat('👤', sar(Math.round(overviewData.grandTotal/TRAVELERS)), 'Per Person', eur(Math.round(overviewData.grandTotal/TRAVELERS)))}
+      ${stat('🎟️', '€'+activitiesEurPaid.toLocaleString(), 'Activities Pre-paid', 'beach clubs & shows')}
+      ${stat('💵', sar(overviewData.netRemaining), 'Net Remaining', 'for daily spending')}
+    </div>
+
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin:20px 0 16px;display:flex;align-items:center;gap:12px">Flight Legs <span style="flex:1;height:1px;background:var(--border);display:inline-block"></span></div>
+    <div class="flight-legs">
+      <div class="leg-row"><span class="leg-route">🇸🇦 Riyadh → 🇬🇷 Mykonos</span><span class="leg-dist">2,449 km</span></div>
+      <div class="leg-row"><span class="leg-route">🇬🇷 Mykonos → 🇩🇪 Stuttgart</span><span class="leg-dist">1,805 km</span></div>
+      <div class="leg-row"><span class="leg-route">🇩🇪 Stuttgart → 🇪🇸 Mallorca</span><span class="leg-dist">1,139 km</span></div>
+      <div class="leg-row"><span class="leg-route">🇪🇸 Mallorca → 🇫🇷 Paris</span><span class="leg-dist">1,052 km</span></div>
+      <div class="leg-row"><span class="leg-route">🇫🇷 Paris → 🇸🇦 Riyadh</span><span class="leg-dist">4,651 km</span></div>
+      <div class="leg-row leg-total"><span class="leg-route">Total Distance</span><span class="leg-dist">11,097 km</span></div>
+    </div>
+  </div>`;
+}
+
+// ── AI TRIP ASSISTANT (T5) ──
+const ASSIST_ENDPOINT = '/.netlify/functions/ask';
+let assistantHistory = []; // [{role:'user'|'assistant', content:'...'}]
+let assistantBusy = false;
+
+// Build a compact, live snapshot of the trip for the AI.
+function buildTripContext() {
+  const lines = [];
+  lines.push('Travelers: Abu Azzam (Trip Accountant), Abu Faisal (Trip Engineer), Abu Saud (Trip Planner), Abu Mosaed (Trip King).');
+  lines.push('Dates: 11–27 Aug 2026, 17 days. Cities: Mykonos (4N), Mallorca (7N), Paris (5N).');
+  lines.push(`Total budget: SAR ${overviewData.totalBudget.toLocaleString()} (40,000 per person). 1 EUR = ${EUR} SAR (locked for totals).`);
+
+  // Live spend snapshot
+  let liveSAR = 0;
+  try { liveSAR = (expensesCache || []).reduce((s,e)=> s + expToSAR(e), 0); } catch(e) {}
+  const confirmedPaid = overviewData.totalConfirmedPaid;
+  const netRemaining = overviewData.netRemaining - liveSAR;
+  lines.push(`Confirmed pre-paid (hotels, flights, car, booked activities): SAR ${Math.round(confirmedPaid).toLocaleString()}.`);
+  lines.push(`Live tracked expenses so far: SAR ${Math.round(liveSAR).toLocaleString()} across ${(expensesCache||[]).length} entries.`);
+  lines.push(`Net remaining for daily spend: SAR ${Math.round(netRemaining).toLocaleString()} (group), about SAR ${Math.round(netRemaining/TRAVELERS).toLocaleString()} per person.`);
+
+  // Per-city detail
+  Object.values(cities).forEach(c => {
+    const paid = c.costs.reduce((s,x)=>s+x.amount,0);
+    lines.push(`\n[${c.name}] ${c.dates}, ${c.nights} nights. Hotel: ${c.hotel.name}. City costs total SAR ${Math.round(paid).toLocaleString()}.`);
+    if (c.flightIn)  lines.push(`  Flight in: ${c.flightIn.airline} ${c.flightIn.flight} ${c.flightIn.dep} ${c.flightIn.depTime} → ${c.flightIn.arr} ${c.flightIn.arrTime} (${c.flightIn.date}).`);
+    if (c.flightOut) lines.push(`  Flight out: ${c.flightOut.airline} ${c.flightOut.flight} ${c.flightOut.dep} ${c.flightOut.depTime} → ${c.flightOut.arr} ${c.flightOut.arrTime} (${c.flightOut.date}).`);
+    if (c.activities) {
+      const acts = c.activities.flatMap(d => d.items).filter(i => i.name);
+      if (acts.length) {
+        lines.push('  Activities: ' + acts.map(a => `${a.name}${a.status?` (${a.status})`:''}`).join(', ') + '.');
+      }
+    }
+  });
+
+  // Recent live expenses (last 8) for detail questions
+  const recent = (expensesCache || []).slice(0, 8);
+  if (recent.length) {
+    lines.push('\nRecent live expenses:');
+    recent.forEach(e => {
+      lines.push(`  - ${e.description || e.desc || 'expense'}: ${e.amount} ${e.currency || 'SAR'}, ${e.category || 'misc'}, ${e.city || 'general'}, payer ${e.payer || 'group'}.`);
+    });
+  }
+  return lines.join('\n');
+}
+
+function renderAssistant() {
+  const suggestions = [
+    'كم باقي لي أصرف اليوم؟',
+    'كم صرفنا على المطاعم؟',
+    'اقترح لي برنامج بكرة في باريس',
+    'ملخص مصاريف ميكونوس',
+  ];
+  const chips = suggestions.map(s =>
+    `<button class="asst-chip" onclick="assistantAsk(this.textContent)">${s}</button>`
+  ).join('');
+
+  // Re-render any existing history (so switching pages keeps the chat)
+  const history = assistantHistory.map(m =>
+    `<div class="asst-msg ${m.role === 'user' ? 'user' : 'bot'}">${escapeHtml(m.content)}</div>`
+  ).join('');
+
+  return `<div class="asst-wrap">
+    <div class="asst-head">
+      <div class="asst-avatar">✨</div>
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--ink)">Trip Assistant</div>
+        <div style="font-size:12px;color:var(--c1);display:flex;align-items:center;gap:6px"><span class="live-dot"></span>knows your whole trip · يفهم رحلتكم</div>
+      </div>
+    </div>
+
+    <div class="asst-thread" id="asstThread">
+      ${history || `<div class="asst-msg bot">أهلًا 👋 أنا مساعد رحلتكم. اسألني عن الميزانية، المصاريف، الأنشطة، الطقس، أو أي تفصيل في الرحلة — بالعربي أو English.</div>`}
+    </div>
+
+    <div class="asst-suggests">${chips}</div>
+
+    <div class="asst-inputbar">
+      <input id="asstInput" type="text" placeholder="اسأل عن أي شي في رحلتكم..." onkeydown="if(event.key==='Enter')assistantSend()" />
+      <button class="asst-send" id="asstSend" onclick="assistantSend()">↑</button>
+    </div>
+    <div class="asst-note">Powered by Claude · answers based only on your trip data</div>
+  </div>`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function assistantSend() {
+  const input = document.getElementById('asstInput');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  assistantAsk(text);
+}
+
+async function assistantAsk(text) {
+  if (assistantBusy) return;
+  const thread = document.getElementById('asstThread');
+  if (!thread) return;
+  assistantBusy = true;
+  const sendBtn = document.getElementById('asstSend');
+  if (sendBtn) sendBtn.disabled = true;
+
+  // Append user message
+  assistantHistory.push({ role: 'user', content: text });
+  thread.insertAdjacentHTML('beforeend', `<div class="asst-msg user">${escapeHtml(text)}</div>`);
+
+  // Typing indicator
+  const typing = document.createElement('div');
+  typing.className = 'asst-msg bot';
+  typing.innerHTML = '<span class="asst-typing"><span></span><span></span><span></span></span>';
+  thread.appendChild(typing);
+  thread.scrollIntoView({ block: 'end' });
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+  try {
+    const resp = await fetch(ASSIST_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tripContext: buildTripContext(),
+        messages: assistantHistory.map(m => ({ role: m.role, content: m.content })),
+      }),
+    });
+    const data = await resp.json();
+    typing.remove();
+
+    if (!resp.ok) {
+      const msg = data && data.error ? data.error : 'حدث خطأ. حاول مرة ثانية.';
+      thread.insertAdjacentHTML('beforeend', `<div class="asst-msg bot error">${escapeHtml(msg)}</div>`);
+    } else {
+      const reply = data.reply || '…';
+      assistantHistory.push({ role: 'assistant', content: reply });
+      thread.insertAdjacentHTML('beforeend', `<div class="asst-msg bot">${escapeHtml(reply)}</div>`);
+    }
+  } catch (err) {
+    typing.remove();
+    thread.insertAdjacentHTML('beforeend', `<div class="asst-msg bot error">ما قدرت أتصل بالمساعد. تأكد من الاتصال وحاول مرة ثانية.</div>`);
+  } finally {
+    assistantBusy = false;
+    if (sendBtn) sendBtn.disabled = false;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+}
+
+// ── RENDER CITY ──
+function renderCity(key) {
+  const c = cities[key];
+  const totalCity = c.costs.reduce((s,x)=>s+x.amount,0);
+  const paidCity  = c.costs.filter(x=>x.status==='paid').reduce((s,x)=>s+x.amount,0);
+  const pendCity  = c.costs.filter(x=>x.status==='pending').reduce((s,x)=>s+x.amount,0);
+  const paidPct   = totalCity > 0 ? Math.round(paidCity/totalCity*100) : 0;
+
+  const hotelStatusColor = c.hotel.status === 'confirmed' ? '#16a34a' : '#b45309';
+  const hotelStatusLabel = c.hotel.status === 'confirmed' ? '✓ Confirmed' : '⚠ Not Confirmed';
+
+  return `<div class="city-panel">
+    ${renderCountdown(tripDates[key], `Arrival in ${c.name}`, countdownBg[key])}
+
+    ${renderCityClocks(key)}
+
+    ${renderCityWeather(key)}
+
+    <div class="city-hero">
+      <div class="city-hero-left">
+        <div class="city-eyebrow">${c.flag} ${c.country}</div>
+        <div class="city-name-big">${c.name}</div>
+        <div class="city-tagline">${c.tagline}</div>
+      </div>
+      <div class="city-hero-right">
+        <div class="city-dates">${c.dates}</div>
+        <div class="city-total-cost"><span style="font-size:22px;opacity:0.5">SAR </span>${totalCity.toLocaleString()}</div>
+        <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px">${eur(totalCity)} · ${c.nights} nights · ${c.travelers} people</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">Duration</div>
+        <div class="stat-val">${c.nights}</div>
+        <div class="stat-sub">Nights · ${c.travelers} travelers</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Total Cost</div>
+        <div class="stat-val" style="font-size:24px">${sar(totalCity)}</div>
+        <div class="stat-sub">${eur(totalCity)}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Per Person</div>
+        <div class="stat-val" style="font-size:24px">${sar(Math.round(totalCity/TRAVELERS))}</div>
+        <div class="stat-sub">${eur(Math.round(totalCity/TRAVELERS))}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Hotel Status</div>
+        <div class="stat-val" style="font-size:18px;color:${hotelStatusColor}">${hotelStatusLabel}</div>
+        <div class="stat-sub">${c.hotel.platform}</div>
+      </div>
+    </div>
+
+    <div class="details-grid">
+      <!-- FLIGHTS -->
+      <div class="detail-card">
+        <div class="dc-title">Flights ✈️</div>
+        ${flightCard(c.flightIn, 'Arriving')}
+        ${flightCard(c.flightOut, 'Departing')}
+      </div>
+
+      <!-- ACCOMMODATION -->
+      <div class="detail-card">
+        <div class="dc-title">Accommodation 🏨</div>
+        <div style="margin-bottom:12px">
+          <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:4px">${c.hotel.name}</div>
+          <div style="font-size:12px;font-style:italic;color:var(--muted)">${c.hotel.notes}</div>
+        </div>
+        <div class="hotel-details">
+          <div class="hotel-detail-row"><span class="hdr-label">Platform</span><span class="hdr-val">${c.hotel.platform}</span></div>
+          <div class="hotel-detail-row"><span class="hdr-label">Status</span><span class="hdr-val" style="color:${hotelStatusColor}">${hotelStatusLabel}</span></div>
+          <div class="hotel-detail-row"><span class="hdr-label">Check-in</span><span class="hdr-val">${c.hotel.checkIn}</span></div>
+          <div class="hotel-detail-row"><span class="hdr-label">Check-out</span><span class="hdr-val">${c.hotel.checkOut}</span></div>
+          ${c.car ? `<div class="hotel-detail-row" style="margin-top:12px;padding-top:12px;border-top:2px solid var(--border)"><span class="hdr-label">🚗 Car</span><span class="hdr-val">${c.car.model}</span></div>
+          <div class="hotel-detail-row"><span class="hdr-label">Company</span><span class="hdr-val">${c.car.company || '—'}</span></div>
+          <div class="hotel-detail-row"><span class="hdr-label">Status</span><span class="hdr-val" style="color:${c.car.status === 'confirmed' ? '#16a34a' : '#b45309'}">${c.car.status === 'confirmed' ? '✓ Confirmed & Paid' : '⚠ Pending'}</span></div>
+          <div class="hotel-detail-row"><span class="hdr-label">Pickup</span><span class="hdr-val">${c.car.pickup}</span></div>
+          <div class="hotel-detail-row"><span class="hdr-label">Drop-off</span><span class="hdr-val">${c.car.dropoff}</span></div>` : ''}
+        </div>
+        ${c.hotel.mapsUrl ? `<a href="${c.hotel.mapsUrl}" target="_blank" class="hotel-maps-btn"><span>📍</span> Open Hotel in Google Maps</a>` : ''}
+      </div>
+    </div>
+
+    ${renderActivities(c)}
+
+    <!-- COST BREAKDOWN -->
+    <div class="payment-section">
+      <div class="payment-header">
+        <div class="payment-title">Cost Breakdown — ${c.name}</div>
+        <div class="payment-summary">SAR ${paidCity.toLocaleString()} paid · SAR ${pendCity.toLocaleString()} pending</div>
+      </div>
+      <div class="payments-list">
+        ${c.costs.map(p=>{
+          const pc = memberColor(p.paidBy);
+          const payerChip = pc
+            ? `<span style="display:inline-block;font-family:'DM Mono',monospace;font-size:9px;padding:2px 8px;border-radius:20px;color:${pc};border:1px solid ${pc};margin-top:4px">● ${p.paidBy}</span>`
+            : (p.paidBy ? `<span style="display:inline-block;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px">${p.paidBy}</span>` : '');
+          return `
+          <div class="payment-row" style="grid-template-columns:1fr auto auto auto auto">
+            <div>
+              <div class="pr-name">${p.icon} ${p.label}</div>
+              <div class="pr-sub">${p.note}</div>
+              ${payerChip}
+            </div>
+            <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace">pp: ${sar(p.amountPP)}</div>
+            <div class="pr-amount">${sar(p.amount)}</div>
+            <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace">${eur(p.amount)}</div>
+            ${statusBadge(p.status)}
+          </div>`;}).join('')}
+      </div>
+      <div class="progress-section" style="margin-top:16px">
+        <div class="progress-header">
+          <span class="ph-label">Payment Progress — ${c.name}</span>
+          <span class="ph-pct">${paidPct}% paid</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:${Math.max(paidPct,2)}%"></div>
+        </div>
+        <div class="progress-labels">
+          <span class="pl-paid">Paid: ${sar(paidCity)}</span>
+          <span class="pl-remaining">Pending: ${sar(pendCity)}</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── MICRO-ANIMATIONS (T4) ──
+const REDUCED_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Staggered fade-up for cards, then animate any number counters inside.
+function applyEntryAnimations(container) {
+  if (REDUCED_MOTION) { animateCounters(container); return; }
+  const cards = container.querySelectorAll(
+    '.stat-tile, .overview-city-card, .boarding-pass, .detail-card, .overview-totals .ot-box'
+  );
+  cards.forEach((el, i) => {
+    el.classList.add('anim-in');
+    el.style.animationDelay = Math.min(i * 60, 600) + 'ms';
+  });
+  setTimeout(() => animateCounters(container), 150);
+}
+
+// Animate elements that carry data-count="<number>" from 0 to target.
+function animateCounters(container) {
+  const els = container.querySelectorAll('[data-count]');
+  els.forEach(el => {
+    const target = parseFloat(el.getAttribute('data-count'));
+    if (isNaN(target)) return;
+    const prefix = el.getAttribute('data-count-prefix') || '';
+    const suffix = el.getAttribute('data-count-suffix') || '';
+    if (REDUCED_MOTION) { el.textContent = prefix + Math.round(target).toLocaleString() + suffix; return; }
+    const dur = 1100;
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = prefix + Math.round(target * eased).toLocaleString() + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// ── SWITCH ──
+function switchCity(key) {
+  currentCity = key;
+  document.querySelectorAll('.city-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.city === key);
+  });
+  // Apply theme
+  document.body.className = `theme-${key}`;
+  // Preserve dark mode
+  if (localStorage.getItem('darkMode') !== 'false') document.body.classList.add('dark');
+  // Activate matching background image
+  document.querySelectorAll('.city-bg').forEach(bg => {
+    bg.classList.toggle('active', bg.id === `bg-${key}`);
+  });
+  // Update header flag and text
+  const headerFlag = document.getElementById('headerFlag');
+  const headerText = document.getElementById('headerTripText');
+  if (key === 'overview') {
+    headerFlag.textContent = '🇬🇷🇪🇸🇫🇷';
+    headerFlag.style.fontSize = '16px';
+    headerText.textContent = 'Summer Trip 2026 — Greece · Spain · France';
+  } else if (key === 'stats') {
+    headerFlag.textContent = '📊';
+    headerFlag.style.fontSize = '22px';
+    headerText.textContent = 'Trip Stats — By the Numbers';
+  } else if (key === 'assistant') {
+    headerFlag.textContent = '✨';
+    headerFlag.style.fontSize = '22px';
+    headerText.textContent = 'Trip Assistant — Ask anything';
+  } else {
+    const c = cities[key];
+    headerFlag.textContent = c.flag;
+    headerFlag.style.fontSize = '24px';
+    headerText.textContent = `${c.name}, ${c.country}`;
+  }
+  const content = document.getElementById('mainContent');
+  content.innerHTML = key === 'overview' ? renderOverview()
+                    : key === 'stats' ? renderStats()
+                    : key === 'assistant' ? renderAssistant()
+                    : renderCity(key);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  applyEntryAnimations(content);
+
+  // Keep live expense data fresh for the assistant's context too
+  if (key === 'assistant') {
+    setTimeout(() => {
+      const inp = document.getElementById('asstInput');
+      if (inp) inp.focus();
+      fetchExpensesFromCloud().catch(()=>{});
+    }, 100);
+  }
+
+  // Init dynamic widgets if on overview
+  if (key === 'overview') {
+    setTimeout(() => {
+      activateExchangeWidget();
+      // Show cached immediately, then refresh from cloud
+      refreshExpenses();
+      fetchExpensesFromCloud().then(() => refreshExpenses());
+      startExpensePolling();
+    }, 100);
+  } else {
+    stopExpensePolling();
+  }
+  // Init clocks + weather on city pages
+  if (key === 'mykonos' || key === 'mallorca' || key === 'paris') {
+    setTimeout(() => {
+      updateClocks();
+      loadCityWeather(key);
+    }, 100);
+  }
+}
+
+// ── REALTIME POLLING (auto-refresh expenses for all members) ──
+let expensePollTimer = null;
+function startExpensePolling() {
+  stopExpensePolling();
+  expensePollTimer = setInterval(async () => {
+    // Only poll when overview is visible and tab is active
+    if (document.hidden) return;
+    const before = expensesCache.length;
+    const beforeJson = JSON.stringify(expensesCache.map(e=>e.id));
+    await fetchExpensesFromCloud();
+    const afterJson = JSON.stringify(expensesCache.map(e=>e.id));
+    if (beforeJson !== afterJson) {
+      refreshExpenses(); // something changed (added/deleted by anyone)
+    }
+  }, 8000); // every 8 seconds
+}
+function stopExpensePolling() {
+  if (expensePollTimer) { clearInterval(expensePollTimer); expensePollTimer = null; }
+}
+
+// ── INIT ──
+document.getElementById('cityNav').addEventListener('click', e => {
+  const btn = e.target.closest('.city-btn');
+  if (btn) switchCity(btn.dataset.city);
+});
+
+// ── CINEMATIC INTRO ──
+const intro = document.getElementById('intro');
+const introBtn = document.getElementById('introEnter');
+function dismissIntro() {
+  intro.classList.add('gone');
+  switchCity('overview');
+  setTimeout(() => intro.remove(), 1200);
+}
+introBtn.addEventListener('click', dismissIntro);
+
+// ── DARK MODE ──
+const darkToggle = document.getElementById('darkToggle');
+const isDark = localStorage.getItem('darkMode') !== 'false';
+if (isDark) { document.body.classList.add('dark'); darkToggle.textContent = '☀️'; }
+else { darkToggle.textContent = '🌙'; }
+darkToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  const dark = document.body.classList.contains('dark');
+  darkToggle.textContent = dark ? '☀️' : '🌙';
+  try { localStorage.setItem('darkMode', dark); } catch(e) {}
+});
+
+// ── LIVE COUNTDOWN UPDATER ──
+function updateCountdowns() {
+  const sections = document.querySelectorAll('.countdown-section');
+  if (!sections.length) return;
+  const target = currentCity === 'overview' ? tripDates.start : tripDates[currentCity];
+  const c = getCountdown(target);
+  if (!c) return;
+  sections.forEach(sec => {
+    const cells = sec.querySelectorAll('.cd-num');
+    if (cells.length === 4) {
+      cells[0].textContent = c.d;
+      cells[1].textContent = String(c.h).padStart(2,'0');
+      cells[2].textContent = String(c.m).padStart(2,'0');
+      cells[3].textContent = String(c.s).padStart(2,'0');
+    }
+  });
+}
+// T6: live-update the "Departs in …" text inside boarding passes
+function updateFlightCountdowns() {
+  const els = document.querySelectorAll('.bp-flight-cd[data-dep]');
+  if (!els.length) return;
+  const now = new Date();
+  els.forEach(el => {
+    const dep = new Date(el.getAttribute('data-dep'));
+    const diff = dep - now;
+    if (diff <= 0) { el.textContent = 'Departing now'; return; }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff / 3600000) % 24);
+    const m = Math.floor((diff / 60000) % 60);
+    const parts = [];
+    if (d > 0) parts.push(d + 'd');
+    parts.push(h + 'h');
+    if (d === 0) parts.push(m + 'm');
+    el.textContent = 'Departs in ' + parts.join(' ');
+  });
+}
+
+setInterval(() => { updateCountdowns(); updateClocks(); updateFlightCountdowns(); }, 1000);
+
+switchCity('overview');
+document.body.classList.add('theme-overview');
+</script>
+</body>
+</html>
