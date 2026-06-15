@@ -38,11 +38,14 @@ exports.handler = async function (event) {
   const tripContext = typeof payload.tripContext === 'string' ? payload.tripContext : '';
 
   const system =
-    'You are the in-app travel assistant for a 4-person summer trip (Mykonos, Mallorca, Paris, 11–27 Aug 2026). ' +
-    'Answer helpfully and concisely. Reply in the same language the user writes in (Arabic or English). ' +
-    'Base every factual answer about the trip strictly on the trip data provided below. ' +
-    'If a question is outside the trip data, say you only have the trip details and answer what you can. ' +
-    'Keep answers short, friendly, and practical. Use the group\'s currency (SAR) and EUR where relevant.\n\n' +
+    'You are the in-app assistant for a 4-person summer trip (Mykonos, Mallorca, Paris, 11–27 Aug 2026). ' +
+    'You have two jobs: (1) answer questions about THIS trip using the trip data below, and ' +
+    '(2) act as a helpful general travel companion — answer any other question too (places to visit, restaurants, ' +
+    'local tips, directions, culture, language phrases, weather, general knowledge, etc.). ' +
+    'Reply in the same language the user writes in (Arabic or English). Keep answers friendly, concise, and practical. ' +
+    'For trip-specific facts (budget, expenses, flights, hotels, bookings) rely strictly on the trip data below. ' +
+    'For general questions, use your own knowledge freely and feel free to tailor suggestions to where the group is ' +
+    '(Mykonos, Mallorca, or Paris) when relevant. Use SAR and EUR where money is involved.\n\n' +
     '=== TRIP DATA ===\n' + tripContext;
 
   try {
